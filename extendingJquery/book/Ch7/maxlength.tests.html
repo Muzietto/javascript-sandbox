@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Max Length Tests</title>
+<link type="text/css" rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css">
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.simulate.js"></script>
+<script type="text/javascript" src="jquery.maxlength.js"></script>
+<script type="text/javascript">
+$(function() {
+	test('Set Defaults', function() {
+		expect(2);
+		init();
+		equal($.maxlength._defaults.max, 200, 'Initial max');
+		$.maxlength.setDefaults({max: 300});
+		equal($.maxlength._defaults.max, 300, 'Changed max');
+		$.maxlength.setDefaults({max: 200});
+	});
+
+	test('Options', function() {
+		expect(12);
+		var txa = init();
+		deepEqual(txa.maxlength('option'), {max: 200, truncate: true, showFeedback: true,
+			feedbackTarget: null, feedbackText: '{r} characters remaining ({m} maximum)',
+			overflowText: '{o} characters too many ({m} maximum)', onFull: null}, 'Initial settings');
+		equal(txa.maxlength('option', 'max'), 200, 'Initial max setting');
+		equal(txa.maxlength('option', 'truncate'), true, 'Initial truncate setting');
+		txa.maxlength('option', {feedbackText: 'Used {c} of {m}'});
+		deepEqual(txa.maxlength('option'), {max: 200, truncate: true, showFeedback: true,
+			feedbackTarget: null, feedbackText: 'Used {c} of {m}',
+			overflowText: '{o} characters too many ({m} maximum)', onFull: null}, 'Changed settings');
+		equal(txa.maxlength('option', 'max'), 200, 'Unchanged max setting');
+		equal(txa.maxlength('option', 'truncate'), true, 'Unchanged truncate setting');
+		txa.maxlength('option', {max: 100, showFeedback: false});
+		deepEqual(txa.maxlength('option'), {max: 100, truncate: true, showFeedback: false,
+			feedbackTarget: null, feedbackText: 'Used {c} of {m}',
+			overflowText: '{o} characters too many ({m} maximum)', onFull: null}, 'Changed settings');
+		equal(txa.maxlength('option', 'max'), 100, 'Changed max setting');
+		equal(txa.maxlength('option', 'truncate'), true, 'Unchanged truncate setting');
+		txa.maxlength('option', 'truncate', false);
+		deepEqual(txa.maxlength('option'), {max: 100, truncate: false, showFeedback: false,
+			feedbackTarget: null, feedbackText: 'Used {c} of {m}',
+			overflowText: '{o} characters too many ({m} maximum)', onFull: null}, 'Changed named setting');
+		equal(txa.maxlength('option', 'max'), 100, 'Unchanged max setting');
+		equal(txa.maxlength('option', 'truncate'), false, 'Changed truncate setting');
+	});
+
+	test('Enable/disable', function() {
+		expect(9);
+		var txa = init();
+		var rem = txa.nextAll('.maxlength-feedback');
+		equal(txa.prop('disabled'), false, 'Textarea not disabled');
+		ok(!txa.hasClass('maxlength-disabled'), 'Textarea not disabled state');
+		ok(!rem.hasClass('maxlength-disabled'), 'Feedback not disabled state');
+		txa.maxlength('disable');
+		rem = txa.nextAll('.maxlength-feedback');
+		equal(txa.prop('disabled'), true, 'Textarea is disabled');
+		ok(txa.hasClass('maxlength-disabled'), 'Textarea is disabled state');
+		ok(rem.hasClass('maxlength-disabled'), 'Feedback is disabled state');
+		txa.maxlength('enable');
+		rem = txa.nextAll('.maxlength-feedback');
+		equal(txa.prop('disabled'), false, 'Textarea not disabled');
+		ok(!txa.hasClass('maxlength-disabled'), 'Textarea not disabled state');
+		ok(!rem.hasClass('maxlength-disabled'), 'Feedback not disabled state');
+	});
+
+	test('Destroy', function() {
+		expect(16);
+		var txa = init();
+		ok(txa.hasClass('hasMaxLength'), 'Marker class present');
+		ok(txa.data('maxlength') != null, 'Instance settings present');
+		ok(txa.nextAll('.maxlength-feedback').length == 1, 'Feedback present');
+		txa.maxlength('destroy');
+		txa = $('#txa');
+		ok(!txa.hasClass('hasMaxLength'), 'Marker class gone');
+		ok(txa.data('maxlength') == null, 'Instance settings absent');
+		ok(txa.nextAll('.maxlength-feedback').length == 0, 'Feedback absent');
+		// Feedback target
+		txa = init({feedbackTarget: '#fbk1'});
+		ok(txa.hasClass('hasMaxLength'), 'Marker class present');
+		ok(txa.data('maxlength') != null, 'Instance settings present');
+		ok(txa.nextAll('.maxlength-feedback').length == 0, 'Feedback absent');
+		ok($('#fbk1').hasClass('maxlength-feedback'), 'Target marked');
+		ok($('#fbk1').val() != '', 'Target filled');
+		txa.maxlength('destroy');
+		txa = $('#txa');
+		ok(!txa.hasClass('hasMaxLength'), 'Marker class gone');
+		ok(txa.data('maxlength') == null, 'Instance settings absent');
+		ok(txa.nextAll('.maxlength-feedback').length == 0, 'Feedback absent');
+		ok($('#fbk1').length > 0 && !$('#fbk1').hasClass('maxlength-feedback'), 'Target unmarked');
+		ok($('#fbk1').val() == '', 'Target emptied');
+	});
+
+	test('Feedback', function() {
+		expect(24);
+		var txa = init();
+		var rem = txa.nextAll('.maxlength-feedback');
+		var fbk1 = $('#fbk1');
+		var fbk2 = $('#fbk2');
+		ok(rem.length == 1, 'Feedback present');
+		equal(rem.text(), '200 characters remaining (200 maximum)', 'Feedback text');
+		equal(fbk1.val(), '', 'Alternate feedback 1');
+		equal(fbk2.text(), '', 'Alternate feedback 2');
+		keyboard(txa, 'abcdefghij');
+		equal(rem.text(), '190 characters remaining (200 maximum)', 'Text entry');
+		txa.maxlength('option', {feedbackText: 'Used {c} of {m}'});
+		rem = txa.nextAll('.maxlength-feedback');
+		equal(rem.text(), 'Used 10 of 200', 'Changed text');
+		txa.maxlength('option', {showFeedback: false});
+		rem = txa.nextAll('.maxlength-feedback');
+		ok(rem.length == 0, 'Feedback absent');
+		txa.maxlength('option', {showFeedback: true});
+		rem = txa.nextAll('.maxlength-feedback');
+		ok(rem.length == 1, 'Feedback present');
+		// Feedback target
+		txa.maxlength('option', {feedbackTarget: '#fbk1'});
+		rem = txa.nextAll('.maxlength-feedback');
+		ok(rem.length == 0, '#fbk1 - feedback absent');
+		equal(fbk1.val(), 'Used 10 of 200', '#fbk1 - alternate feedback 1');
+		equal(fbk2.text(), '', '#fbk1 - alternate feedback 2');
+		keyboard(txa, 'klmnopqrst');
+		equal(fbk1.val(), 'Used 20 of 200', '#fbk1 - alternate feedback 1');
+		txa.maxlength('option', {feedbackTarget: fbk2[0]});
+		rem = txa.nextAll('.maxlength-feedback');
+		ok(rem.length == 0, 'fbk2[0] - feedback absent');
+		equal(fbk1.val(), '', 'fbk2[0] - alternate feedback 1');
+		equal(fbk2.text(), 'Used 20 of 200', 'fbk2[0] - alternate feedback 2');
+		keyboard(txa, 'uvwxyz');
+		equal(fbk2.text(), 'Used 26 of 200', 'fbk2[0] - alternate feedback 2');
+		var fbk = function() {
+			return fbk1;
+		};
+		txa.maxlength('option', {feedbackTarget: fbk});
+		rem = txa.nextAll('.maxlength-feedback');
+		ok(rem.length == 0, 'fbk() - feedback absent');
+		equal(fbk1.val(), 'Used 26 of 200', 'fbk() - alternate feedback 1');
+		equal(fbk2.text(), '', 'fbk() - alternate feedback 2');
+		keyboard(txa, '0123456789');
+		equal(fbk1.val(), 'Used 36 of 200', 'fbk() - alternate feedback 1');
+		txa.maxlength('option', {feedbackTarget: null});
+		rem = txa.nextAll('.maxlength-feedback');
+		ok(rem.length == 1, 'null - feedback present');
+		equal(rem.text(), 'Used 36 of 200', 'null - feedback');
+		equal(fbk1.val(), '', 'null - alternate feedback 1');
+		equal(fbk2.text(), '', 'null - alternate feedback 2');
+	});
+
+	test('Text', function() {
+		expect(28);
+		var txa = init({max: 20});
+		var rem = txa.nextAll('.maxlength-feedback');
+		keyboard(txa, 'abcdefghij');
+		equal(txa.val(), 'abcdefghij', 'Entered short text');
+		ok(!txa.hasClass('maxlength-full'), 'Not full with short text');
+		ok(!txa.hasClass('maxlength-overflow'), 'Not overflow with short text');
+		equal(rem.text(), '10 characters remaining (20 maximum)', 'Feedback for short text');
+		keyboard(txa, 'klmnopqrstuvwxyz');
+		equal(txa.val(), 'abcdefghijklmnopqrst', 'Entered full text');
+		ok(txa.hasClass('maxlength-full'), 'Full with full text');
+		ok(txa.hasClass('maxlength-overflow'), 'Not overflow with full text');
+		equal(rem.text(), '0 characters remaining (20 maximum)', 'Feedback with full text');
+		backspace(txa);
+		equal(txa.val(), 'abcdefghijklmnopqrs', 'BS');
+		ok(!txa.hasClass('maxlength-full'), 'Not full with BS');
+		ok(!txa.hasClass('maxlength-overflow'), 'Not overflow with BS');
+		equal(rem.text(), '1 characters remaining (20 maximum)', 'Feedback with BS');
+		keyboard(txa, 'u');
+		equal(txa.val(), 'abcdefghijklmnopqrsu', 'More text');
+		ok(txa.hasClass('maxlength-full'), 'Full with more text');
+		ok(!txa.hasClass('maxlength-overflow'), 'Not overflow with more text');
+		equal(rem.text(), '0 characters remaining (20 maximum)', 'Feedback with more text');
+		// Truncate off
+		txa = init({max: 20, truncate: false}).val('');
+		rem = txa.nextAll('.maxlength-feedback');
+		keyboard(txa, 'abcdefghij');
+		equal(txa.val(), 'abcdefghij', 'No truncate - entered text');
+		ok(!txa.hasClass('maxlength-full'), 'No truncate - not full with short text');
+		ok(!txa.hasClass('maxlength-overflow'), 'No truncate - not overflow with short text');
+		equal(rem.text(), '10 characters remaining (20 maximum)', 'No truncate - feedback for short text');
+		keyboard(txa, 'klmnopqrst');
+		equal(txa.val(), 'abcdefghijklmnopqrst', 'No truncate - entered full text');
+		ok(txa.hasClass('maxlength-full'), 'No truncate - full with full text');
+		ok(!txa.hasClass('maxlength-overflow'), 'No truncate - not overflow with full text');
+		equal(rem.text(), '0 characters remaining (20 maximum)', 'No truncate - feedback with full text');
+		keyboard(txa, 'uvwxyz');
+		equal(txa.val(), 'abcdefghijklmnopqrstuvwxyz', 'No truncate - more text');
+		ok(txa.hasClass('maxlength-full'), 'No truncate - full with more text');
+		ok(txa.hasClass('maxlength-overflow'), 'No truncate - overflow with more text');
+		equal(rem.text(), '6 characters too many (20 maximum)', 'No truncate - feedback with more text');
+	});
+
+	var count = 0;
+	var overflowing = null;
+	function filled(overflow) {
+		count++;
+		overflowing = overflow;
+	}
+	
+	test('Events', function() {
+		expect(10);
+		var txa = init({max: 20, onFull: filled});
+		keyboard(txa, 'abcdefghijklmnopqrs');
+		equal(count, 0, 'No event');
+		keyboard(txa, 't');
+		equal(count, 1, 'Full event');
+		equal(overflowing, false, 'Not overflowing');
+		keyboard(txa, 'u');
+		equal(count, 2, 'Full event');
+		equal(overflowing, false, 'Not overflowing');
+		// Truncate off
+		count = 0;
+		overflowing = null;
+		txa = init({max: 20, truncate: false, onFull: filled});
+		keyboard(txa, 'abcdefghijklmnopqrs');
+		equal(count, 0, 'No event');
+		keyboard(txa, 't');
+		equal(count, 1, 'Full event');
+		equal(overflowing, false, 'Not overflowing');
+		keyboard(txa, 'u');
+		equal(count, 2, 'Full event');
+		equal(overflowing, true, 'Overflowing');
+	});
+});
+
+function init(settings) {
+	return $('#txa').val('').maxlength('destroy').maxlength(settings);
+}
+
+function keyboard(input, chars) {
+	for (var i = 0; i < chars.length; i++) {
+		var ch = chars.charCodeAt(i);
+		input.simulate('keydown', {charCode: ch}).
+			simulate('keypress', {charCode: ch}).
+			val(function(index, value) {
+				return value + chars.charAt(i);
+			}).
+			simulate('keyup', {charCode: ch});
+	}
+}
+
+function backspace(input) {
+	input.simulate('keydown', {keyCode: $.simulate.VK_BS}).
+		simulate('keypress', {keyCode: $.simulate.VK_BS}).
+		val(function(index, value) {
+			return value.replace(/.$/, '');
+		}).
+		simulate('keyup', {keyCode: $.simulate.VK_BS});
+}
+</script>
+</head>
+
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture">
+	<input type="text" id="fbk1"><span id="fbk2"></span>
+	<textarea id="txa" rows="3" cols="30"></textarea>
+</div>
+</body>
+</html>

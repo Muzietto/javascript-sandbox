@@ -1,0 +1,205 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Background Position</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "../common/demo.css";
+
+.background { width: 400px; height: 300px; margin-left: 7.5em;
+	background: #00f url(uluru.jpg) repeat 0px 0px;
+	color: #fff; font-size: 2em; font-weight: bold; text-align: center; }
+#namedBG { background-position: left top; }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="jquery.backgroundpos.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#download').click(function() {
+		window.location = 'jquery.backgroundpos.package-1.1.0.zip';
+	});
+});
+</script>
+</head>
+<body>
+<h1>jQuery Background Position</h1>
+<p>A <a href="http://jquery.com">jQuery</a> plugin
+	that allows the position of a background image to be animated.</p>
+<p>The current version is <span class="version">1.1.0</span> and is available 
+	under the <a href="https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt">MIT</a> licence.
+	For more detail see the <a href="backgroundPosRef.html">documentation reference</a> page.</p>
+<p style="text-align: center;">
+	<button type="button" id="download">Download now</button>
+	<span id="bookmark"></span>
+</p>
+<div id="tabs">
+	<ul>
+		<li><a href="#basics"><span>Basics</span></a></li>
+		<li><a href="#positions"><span>Positions</span></a></li>
+		<li><a href="#options"><span>Options</span></a></li>
+		<li><a href="#wild"><span>In the Wild</span></a></li>
+		<li><a href="#quick"><span>Quick Ref</span></a></li>
+	</ul>
+	<div id="basics" class="feature">
+		<h2>Basics</h2>
+		<p>You can animate the position of a background image as either
+			<code>'backgroundPosition'</code> or <code>'background-position'</code>,
+			providing both the horizontal and vertical offsets.</p>
+		<p><span class="demoLabel">Simple animation:</span>
+			<button type="button" id="simpleButton">Go</button></p>
+		<div id="simpleBG" class="background">Foreground text</div>
+		<pre><code class="jsdemo">$('#simpleButton').click(function() {
+	$('#simpleBG').css({'background-position': '0px 0px'}).
+		animate({'background-position': '-200px -150px'});
+});</code></pre>
+	</div>
+	<div id="positions" class="feature">
+		<h2>Positions</h2>
+		<p>You have several options when specifying the new background position,
+			besides supplying an absolute offset.</p>
+		<p><span class="demoLabel">By named position:</span>
+			<select id="namedSelect"><option>left top</option><option>center top</option>
+				<option>right top</option><option>left center</option>
+				<option>center</option><option>right center</option>
+				<option>left bottom</option><option>center bottom</option>
+				<option>right bottom</option><option>left</option>
+				<option>right</option><option>top</option>
+				<option>bottom</option><option>center</option></select></p>
+		<div id="namedBG" class="background">Foreground text</div>
+		<pre><code class="jsdemo">$('#namedSelect').change(function() {
+	$('#namedBG').animate({backgroundPosition: $(this).val()});
+});</code></pre>
+		<p><span class="demoLabel">By relative position:</span>
+			<select id="relativeSelect"><option>+=100 +=50</option><option>-=100 -=50</option>
+				<option>+=200px -=100px</option><option>-=50% +=50%</option></select>
+			<button type="button" id="relativeButton">Go</button></p>
+		<div id="relativeBG" class="background">Foreground text</div>
+		<pre><code class="jsdemo">$('#relativeButton').click(function() {
+	$('#relativeBG').animate({backgroundPosition: $('#relativeSelect').val()});
+});</code></pre>
+	</div>
+	<div id="options" class="feature">
+		<h2>Options</h2>
+		<p>You can still use the standard options of all animations.</p>
+		<p><span class="demoLabel">Speed:</span>
+			<select id="speedSelect"><option>slow</option><option>normal</option>
+				<option>fast</option><option>1000</option>
+				<option>2000</option></select>
+			<button type="button" id="speedButton">Go</button></p>
+		<div id="speedBG" class="background">Foreground text</div>
+		<pre><code class="jsdemo">$('#speedButton').click(function() {
+	var speed = parseInt($('#speedSelect').val(), 10);
+	speed = (isNaN(speed) ? $('#speedSelect').val() : speed);
+	$('#speedBG').animate({backgroundPosition: '+=50% +=50%'}, speed);
+});</code></pre>
+		<p><span class="demoLabel">Easing:</span>
+			<select id="easingSelect"><option value="swing">swing</option>
+				<option value="easeInQuad">in quadratic</option>
+				<option value="easeOutQuad">out quadratic</option>
+				<option value="easeInOutQuad">in/out quadratic</option>
+				<option value="easeInCubic">in cubic</option>
+				<option value="easeOutCubic">out cubic</option>
+				<option value="easeInOutCubic">in/out cubic</option>
+				<option value="easeInQuart">in quartic</option>
+				<option value="easeOutQuart">out quartic</option>
+				<option value="easeInOutQuart">in/out quartic</option>
+				<option value="easeInQuint">in quintic</option>
+				<option value="easeOutQuint">out quintic</option>
+				<option value="easeInOutQuint">in/out quintic</option>
+				<option value="easeInSine">in sine</option>
+				<option value="easeOutSine">out sine</option>
+				<option value="easeInOutSine">in/out sine</option>
+				<option value="easeInExpo">in exponential</option>
+				<option value="easeOutExpo">out exponential</option>
+				<option value="easeInOutExpo">in/out exponential</option>
+				<option value="easeInCirc">in circular</option>
+				<option value="easeOutCirc">out circular</option>
+				<option value="easeInOutCirc">in/out circular</option>
+				<option value="easeInBack">in back</option>
+				<option value="easeOutBack">out back</option>
+				<option value="easeInOutBack">in/out back</option>
+				<option value="easeInBounce">in bounce</option>
+				<option value="easeOutBounce" selected="selected">out bounce</option>
+				<option value="easeInOutBounce">in/out bounce</option></select>
+			<button type="button" id="easingButton">Go</button></p>
+		<div id="easingBG" class="background">Foreground text</div>
+		<pre><code class="jsdemo">$('#easingButton').click(function() {
+	$('#easingBG').animate({backgroundPosition: '+=50% +=50%'},
+		2000, $('#easingSelect').val());
+});</code></pre>
+		<p><span class="demoLabel">Callback:</span>
+			<button type="button" id="callbackButton">Go</button></p>
+		<div id="callbackBG" class="background">Foreground text</div>
+		<pre><code class="jsdemo">$('#callbackButton').click(function() {
+	$('#callbackBG').animate({backgroundPosition: '+=50% +=50%'},
+		1000, function() { alert('Completed animation'); });
+});</code></pre>
+	</div>
+	<div id="wild" class="feature">
+		<h2>In the Wild</h2>
+		<p>This tab highlights examples of this plugin in use "in the wild".</p>
+		<div id="wildLinks">
+			<div>
+				<h3><!--a href=""></a--></h3>
+				<p>None as yet.</p>
+			</div>
+		</div>
+		<p style="clear: both;">To add another example, please contact me (kbwood{at}iinet.com.au)
+			and provide the plugin name, the URL of your site, its title,
+			and a short description of its purpose and where/how the plugin is used.</p>
+	</div>
+	<div id="quick" class="feature">
+		<h2>Quick Reference</h2>
+		<p>Below are examples of how the plugin can be used. For more detail see the
+			<a href="backgroundPosRef.html">documentation reference</a> page.</p>
+		<pre><code class="js">$(selector).animate({backgroundPosition: '-100px -50px'});
+$(selector).animate({'background-position': '+=50% +=25%'});
+$(selector).animate({backgroundPosition: 'left center'});</code></pre>
+	</div>
+</div>
+<h2>Usage</h2>
+<ol>
+<li>Include the jQuery library in the head section of your page.
+	<pre><code class="html">&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre></li>
+<li>Download and include the jQuery Background Position JavaScript in the head section of your page.
+	<pre><code class="html">&lt;script type="text/javascript" src="jquery.backgroundpos.js"&gt;&lt;/script&gt;</code></pre>
+    Alternately, you can use the minified version
+	<code>jquery.backgroundpos.min.js</code> (1.8K vs 3.1K, 0.9K when zipped).</li>
+<li>Invoke the animation on your elements.
+	<pre><code class="js">$(selector).animate({backgroundPosition: '-100px -50px'});</code></pre></li>
+</ol>
+<p> For more detail see the
+	<a href="backgroundPosRef.html">documentation reference</a> page.</p>
+<h2>Comments</h2>
+<blockquote><p>I just wanted to thank you for your wonderful jQuery plugin.
+	I was having problems with IE not working with my animations and your plugin really helped me out.</p></blockquote>
+<div><cite>Robert Stringer</cite></div>
+<p style="clear: both;">Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<h2><a name="changes">Change History</a></h2>
+<table border="0" id="history" width="100%">
+<tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+<tr><td>1.1.0</td><td>03&nbsp;Nov&nbsp;2012</td><td><ul>
+	<li>Updated for jQuery 1.8</li>
+</ul></td></tr>
+<tr><td>1.0.1</td><td>28&nbsp;May&nbsp;2011</td><td><ul>
+	<li>Updated for jQuery 1.6</li>
+	<li>Allow explicit positive values for positioning</li>
+	<li>Default to <code>center</code> if no current position</li>
+</ul></td></tr>
+<tr><td>1.0.0</td><td>13&nbsp;Nov&nbsp;2010</td><td><ul>
+	<li>Initial release</li>
+</ul></td></tr>
+</table>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Ajax Demonstration</title>
+<style type="text/css">
+@import "../common/demo.css";
+
+th { padding: 4px; text-align: left; }
+tbody td { padding: 4px; border-top: 1px solid #ccc; }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.extendingajax.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	$.ajax.simulateHtml['default'] = {delay: 500, variation: 1000, html: ''};
+	$.ajax.simulateHtml['test.html'] = {delay: 500, variation: 1000, html: '<p>Try this instead<\/p>'};
+
+	$('input:checkbox').click(function() {
+		var type = this.id;
+		if ($(this).is(':checked')) {
+			$.ajax.disableDataTypes = $.map($.ajax.disableDataTypes, function(v) {
+				return (v == type ? null : v);
+			});
+		}
+		else {
+			$.ajax.disableDataTypes.push(type);
+		}
+	});
+	$('#ajaxBtn').click(function() {
+		$.ajax({url: 'uluru.jpg', dataType: 'image', success: function(image, status, jqXHR) {
+			$('#imageResult img').replaceWith(image);
+		}});
+		$.ajax({url: 'quotes.csv', success: function(csv) {
+			var table = '<table><thead><tr>';
+			for (var i = 0; i < csv.fieldNames.length; i++) {
+				table += '<th>' + csv.fieldNames[i] + '<\/th>';
+			}
+			table += '<\/tr><\/thead><tbody>';
+			for (var i = 0; i < csv.rows.length; i++) {
+				table += '<tr>';
+				for (var j = 0; j < csv.fieldNames.length; j++) {
+					table += '<td>' + csv.rows[i][j] + '<\/td>';
+				}
+				table += '<\/tr>';
+			}
+			table += '<\/tbody><\/table>';
+			$('#csvResult').append(table);
+		}});
+		$.ajax({url: 'quotes.csv', dataType: 'csv table', success: function(table) {
+			$('#tableResult').append(table);
+		}});
+		$.get('http://www.example.com/path/test.html', function(html, status, jqXHR) {
+			$('#simResult').append(html);
+		}, 'html');
+		$.ajax('http://www.example.com/path/missing.html', {dataType: 'html',
+			success: function() {
+				alert('Found missing.html but shouldn\'t have!');
+			}, error: function() {
+				alert('As expected missing.html is missing!');
+			}});
+	});
+	$('#reset').click(function() {
+		$('#imageResult img').attr('src', 'gorge.jpg');
+		$('fieldset *:not(legend,img)').remove();
+	});
+});
+</script>
+</head>
+<body>
+<h1>jQuery Ajax Demonstration</h1>
+<div>
+<label><input type="checkbox" id="html" checked> Enable 'html' via Ajax</label>
+<label><input type="checkbox" id="image" checked> Enable 'image' via Ajax</label><br>
+<button type="button" id="ajaxBtn">Ajax</button>
+<button type="button" id="reset">Reset</button><br>
+<fieldset id="imageResult"><legend>Image Load</legend><img id="img" src="gorge.jpg" alt="Gorge"></fieldset>
+<fieldset id="csvResult"><legend>CSV Load</legend></fieldset>
+<fieldset id="tableResult"><legend>CSV Table Load</legend></fieldset>
+<fieldset id="simResult"><legend>HTML Simulation</legend></fieldset>
+</div>
+</body>
+</html>

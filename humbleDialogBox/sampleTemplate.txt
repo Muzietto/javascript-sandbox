@@ -1,0 +1,16 @@
+      
+    {#foreach $T.docs as document} 
+      <div class="uploadWidget" id="uploadWidget_{$T.document.docId}">
+        <a target="_blank" class="uploadIcon" href="{$T.document.docUrl}" title="{$T.document.docDescription}">
+          <img border="0" alt="icon file" src="/includes/img/files/{$T.document.fileExtension}_medsmall.png"/>
+        </a>
+        <a target="_blank"  href="{$T.document.docUrl}" class="text" title="{$T.document.docDescription}">{$T.document.docFilename}</a>
+        <span class="date">{$T.document.docDate}</span>
+        <a onclick="STIC.project.deleteProjectDocument.apply($(this).parent());return false;" href="#">
+          <img title="Delete this Project Document" src="/includes/img/elimina_row.gif" class="elimina" />
+        </a>
+        <label class="projectDocumentMessagingLabel"></label>
+        <div class="clear"></div>
+      </div>
+    {#/for} 
+     

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Right-click Event Reference</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "../common/demo.css";
+
+table { width: 100%; }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+</head>
+<body>
+<h1>jQuery Right-click Event Reference</h1>
+<p>A <a href="http://jquery.com">jQuery</a> plugin
+	that allows you to bind to a right click or multiple-click event.</p>
+<p>This page provides a documentation reference for working
+	with the plugin <span class="version">v1.0.0</span>.
+	See a <a href="rightclick.html">demonstration</a> of the right-click
+	plugin and download the code from there.</p>
+<p style="text-align: center;"><span id="bookmark"></span></p>
+<div id="tabs">
+	<ul>
+		<li><a href="#usage"><span>Usage</span></a></li>
+		<li><a href="#multi"><span>Multiple-click</span></a></li>
+	</ul>
+	<div id="usage" class="feature">
+		<h2>Usage</h2>
+		<p>Just bind to the <code>rightclick</code> event as you would normally.</p>
+		<pre><code class="js">$(selector).bind('rightclick', function(event) { ... });</code></pre>
+		<p>You can remove an event handler with the <code>unbind</code> function.
+			You can also use <code>on</code> and <code>off</code> for the same purposes.
+			Include namespaces for your events if desired.</p>
+		<p>The <code>event.type</code> available to the callback function is 'rightclick'.</p>
+		<p>Your callback function should return <code>false</code> to suppress
+			the default behaviour, which opens a context menu.</p>
+		<p>You can disable the right-click functionality on individual elements
+			by adding them to the <code>$.event.rightclickDisabled</code> collection.</p>
+		<pre><code class="js">$.event.rightclickDisabled = $.event.rightclickDisabled.add('#rightClick');</code></pre>
+		<p>Re-enable them by removing them from this set.</p>
+		<pre><code class="js">$.event.rightclickDisabled = $.event.rightclickDisabled.filter(':not(#rightClick)');</code></pre>
+	</div>
+	<div id="multi" class="feature">
+		<h2>Multiple-click</h2>
+		<p>Bind to the <code>rightmulticlick</code> event and configure it as necessary.</p>
+		<pre><code class="js">$(selector).bind('rightmulticlick', function(event) { ... });
+$(selector).bind('rightmulticlick', {clickCount: 3, clickSpeed: 300},
+	function(event) { ... });</code></pre>
+		<table border="0">
+		<tr><th>Name</th><th>Type</th><th>Default</th><th>Comments</th></tr>
+		<tr><td><a name="clickCount"></a>clickCount</td><td>number</td><td>2</td>
+			<td>The number of consecutive clicks before the event fires.</td></tr>
+		<tr><td><a name="clickSpeed"></a>clickSpeed</td><td>number</td><td>500</td>
+			<td>The maximum time for all clicks to count as a multiple click.</td></tr>
+		</table>
+	</div>
+</div>
+<p>Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Localisation Tests</title>
+<link type="text/css" rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css">
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.localisation.min.js"></script>
+<script type="text/javascript">
+var counts = {};
+
+$(function() {
+	test('Defaults', function() {
+		expect(3);
+		equal((navigator.language || navigator.userLanguage).toLowerCase().replace(/_/, '-'),
+			$.localise.defaultLanguage.toLowerCase(), 'Default language');
+		reset();
+		$.localise('l10n', true);
+		deepEqual(counts, {'': 1}, 'Single');
+		reset();
+		$.localise(['l10n', 'l10n2'], true);
+		deepEqual(counts, {'': 1, l2: 1}, 'Array');
+	});
+
+	test('Localize', function() {
+		expect(3);
+		equal((navigator.language || navigator.userLanguage).toLowerCase().replace(/_/, '-'),
+			$.localize.defaultLanguage.toLowerCase(), 'Default language');
+		reset();
+		$.localize('l10n', true);
+		deepEqual(counts, {'': 1}, 'Single');
+		reset();
+		$.localize(['l10n', 'l10n2'], true);
+		deepEqual(counts, {'': 1, l2: 1}, 'Array');
+	});
+
+	test('Settings', function() {
+		expect(12);
+		reset();
+		$.localise('l10n', {loadBase: true});
+		deepEqual(counts, {'': 1}, 'Single - load base');
+		reset();
+		$.localise(['l10n', 'l10n2'], {loadBase: true});
+		deepEqual(counts, {'': 1, l2: 1}, 'Array - load base');
+		reset();
+		$.localise('l10n', {language: 'aa'});
+		deepEqual(counts, {'aa': 1}, 'Single - language aa');
+		reset();
+		$.localise(['l10n', 'l10n2'], {language: 'aa'});
+		deepEqual(counts, {'aa': 1}, 'Array - language aa');
+		reset();
+		$.localise('l10n', {language: 'aa-AA'});
+		deepEqual(counts, {'aa': 1, 'aa-AA': 1}, 'Single - language aa-AA');
+		reset();
+		$.localise(['l10n', 'l10n2'], {language: 'aa-AA'});
+		deepEqual(counts, {'aa': 1, 'aa-AA': 1}, 'Array - language aa-AA');
+		reset();
+		$.localise('l10n', {language: 'aa-AA', loadBase: true});
+		deepEqual(counts, {'': 1, 'aa': 1, 'aa-AA': 1}, 'Single - language aa-AA, load base');
+		reset();
+		$.localise(['l10n', 'l10n2'], {language: 'aa-AA', loadBase: true});
+		deepEqual(counts, {'': 1, 'aa': 1, 'aa-AA': 1, l2: 1}, 'Array - language aa-AA, load base');
+		reset();
+		$.localise('l10n', {language: 'aa', path: ''});
+		deepEqual(counts, {'aa': 1}, 'Single - language aa, single path');
+		reset();
+		$.localise(['l10n', 'l10n2'], {language: 'aa', path: ''});
+		deepEqual(counts, {'aa': 1}, 'Array - language aa, single path');
+		reset();
+		$.localise('l10n', {language: 'aa', loadBase: true, path: ['', 'Y/../']});
+		deepEqual(counts, {'': 1, 'aa': 1}, 'Single - language aa, load base, array path');
+		reset();
+		$.localise(['l10n', 'l10n2'], {language: 'aa', loadBase: true, path: ['', 'Y/../']});
+		deepEqual(counts, {'': 1, 'aa': 1, l2: 1}, 'Array - language aa, load base, array path');
+	});
+
+	test('Parameters', function() {
+		expect(12);
+		reset();
+		$.localise('l10n', true);
+		deepEqual(counts, {'': 1}, 'Single - load base');
+		reset();
+		$.localise(['l10n', 'l10n2'], true);
+		deepEqual(counts, {'': 1, l2: 1}, 'Array - load base');
+		reset();
+		$.localise('l10n', 'aa');
+		deepEqual(counts, {'aa': 1}, 'Single - language aa');
+		reset();
+		$.localise(['l10n', 'l10n2'], 'aa');
+		deepEqual(counts, {'aa': 1}, 'Array - language aa');
+		reset();
+		$.localise('l10n', 'aa-AA');
+		deepEqual(counts, {'aa': 1, 'aa-AA': 1}, 'Single - language aa-AA');
+		reset();
+		$.localise(['l10n', 'l10n2'], 'aa-AA');
+		deepEqual(counts, {'aa': 1, 'aa-AA': 1}, 'Array - language aa-AA');
+		reset();
+		$.localise('l10n', 'aa-AA', true);
+		deepEqual(counts, {'': 1, 'aa': 1, 'aa-AA': 1}, 'Single - language aa-AA, load base');
+		reset();
+		$.localise(['l10n', 'l10n2'], 'aa-AA', true);
+		deepEqual(counts, {'': 1, 'aa': 1, 'aa-AA': 1, l2: 1}, 'Array - language aa-AA, load base');
+		reset();
+		$.localise('l10n', 'aa', '');
+		deepEqual(counts, {'aa': 1}, 'Single - language aa, single path');
+		reset();
+		$.localise(['l10n', 'l10n2'], 'aa', '');
+		deepEqual(counts, {'aa': 1}, 'Array - language aa, single path');
+		reset();
+		$.localise('l10n', 'aa', true, ['', 'Y/../']);
+		deepEqual(counts, {'': 1, 'aa': 1}, 'Single - language aa, load base, array path');
+		reset();
+		$.localise(['l10n', 'l10n2'], 'aa', true, ['', 'Y/../']);
+		deepEqual(counts, {'': 1, 'aa': 1, l2: 1}, 'Array - language aa, load base, array path');
+	});
+
+	asyncTest('Asynchronous 1', function() {
+		expect(3);
+		reset();
+		$.localise(['l10n'], {language: 'aa-AA', async: true, complete: function(pkg) {
+			deepEqual(window, this, 'Window context');
+			equal(pkg, 'l10n', 'Package correct');
+			deepEqual(counts, {'aa': 1, 'aa-AA': 1}, 'Array - language aa-AA');
+			start();
+		}});
+	});
+
+	asyncTest('Asynchronous 2', function() {
+		expect(3);
+		reset();
+		$.localise('l10n', 'aa-AA', true, true, function(pkg) {
+			deepEqual(window, this, 'Window context');
+			equal(pkg, 'l10n', 'Package correct');
+			deepEqual(counts, {'': 1, 'aa': 1, 'aa-AA': 1}, 'Single - language aa-AA');
+			start();
+		});
+	});
+});	
+
+function reset() {
+	counts = {};
+}
+</script>
+</head>
+
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+</body>
+</html>

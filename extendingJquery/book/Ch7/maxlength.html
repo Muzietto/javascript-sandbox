@@ -1,0 +1,273 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Max Length</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "jquery.maxlength.css";
+@import "../common/demo.css";
+
+textarea { width: 30em; border: 1px solid #3c8243; }
+.maxlength-feedback { display: inline-block; width: 7em; margin: 0em 1em; vertical-align: top; }
+.keepTogether { display: inline-block; }
+#styleLength + .maxlength-feedback { width: auto; margin: 0em 0em 0em 0.5em; vertical-align: bottom; }
+#belowLength + .maxlength-feedback { display: block; width: auto; margin-left: 20em; }
+#overlaidLength { padding-top: 0.5em; }
+#overlaidLength + .maxlength-feedback { position: relative; left: -5.25em; top: 1px; width: 4em; padding-right: 0.25em; color: #fff; background-color: #3c8243; text-align: right; }
+#targetFeedback { width: 20em; margin: 0em; padding: 0.25em; background-color: #ddffe8; border: 1px solid #3c8243; }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="jquery.maxlength.js"></script>
+<script type="text/javascript" src="jquery.maxlength-fr.js"></script>
+<script type="text/javascript">
+$.maxlength.setDefaults($.maxlength.regional['']);
+</script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#download').click(function() {
+		window.location = 'jquery.maxlength.package-1.1.0.zip';
+	});
+});
+</script>
+</head>
+<body>
+<h1>jQuery Max Length</h1>
+<p>A <a href="http://jquery.com">jQuery</a> plugin
+	that applies a maximum length to a textarea.</p>
+<p>The current version is <span class="version">1.1.0</span> and is available 
+	under the <a href="https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt">MIT</a> licence.
+	For more detail see the <a href="maxlengthRef.html">documentation reference</a> page.
+	Or see a <a href="maxlengthBasics.html">minimal page</a> that you could
+	use as a basis for your own investigations.</p>
+<p style="text-align: center;">
+	<button type="button" id="download">Download now</button>
+	<span id="bookmark"></span>
+</p>
+<div id="tabs">
+	<ul>
+		<li><a href="#default"><span>Defaults</span></a></li>
+		<li><a href="#options"><span>Options</span></a></li>
+		<li><a href="#events"><span>Events</span></a></li>
+		<li><a href="#styling"><span>Styling</span></a></li>
+		<li><a href="#wild"><span>In the Wild</span></a></li>
+		<li><a href="#quick"><span>Quick Ref</span></a></li>
+	</ul>
+	<div id="default" class="feature">
+		<h2>Default Settings</h2>
+		<p>The max length functionality can easily be added to a textarea
+			with appropriate default settings.<br>
+			You can also remove the max length functionality if it is no longer required,
+			or disable or enable the field to receive input.</p>
+		<p><span class="demoLabel">Default max length:</span>
+			<textarea id="defaultLength" rows="3" cols="60"></textarea></p>
+		<p><span class="demoLabel">&nbsp;</span>
+			<button type="button" id="removeLength">Remove</button>
+			<button type="button" id="disableLength">Disable</button></p>
+		<pre><code class="jsdemo">$('#defaultLength').maxlength();
+
+$('#removeLength').toggle(function() {
+		$(this).text('Re-attach');
+		$('#defaultLength').maxlength('destroy');
+	},
+	function() {
+		$(this).text('Remove');
+		$('#defaultLength').maxlength();
+	});
+
+$('#disableLength').toggle(function() {
+		$(this).text('Enable');
+		$('#defaultLength').maxlength('disable');
+	},
+	function() {
+		$(this).text('Disable');
+		$('#defaultLength').maxlength('enable');
+	});</code></pre>
+		<p style="clear: both;">You can override the defaults globally as shown below:</p>
+		<pre><code class="js">$.maxlength.setDefaults({showFeedback: true});</code></pre>
+		<p>Processed fields are marked with a class of <code>hasMaxLength</code>
+			and are not re-processed if targetted a second time.</p>
+	</div>
+	<div id="options" class="feature">
+		<h2>Options</h2>
+		<p>Customise the max length functionality through additional settings.</p>
+		<p><span class="demoLabel">Different length:</span>
+			<textarea id="otherLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#otherLength').maxlength({max: 300});</code></pre>
+		<p><span class="demoLabel">Don't truncate text:</span>
+			<textarea id="truncateLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#truncateLength').maxlength({truncate: false});</code></pre>
+		<p><span class="demoLabel">No feedback shown:</span>
+			<textarea id="noShowLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#noShowLength').maxlength({showFeedback: false});</code></pre>
+		<p><span class="demoLabel">Custom feedback:</span>
+			<textarea id="feedbackLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#feedbackLength').maxlength({feedbackText: 'Used {c} of {m}'});</code></pre>
+		<p><span class="demoLabel">Feedback only when active:</span>
+			<textarea id="activeLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#activeLength').maxlength({showFeedback: 'active'});</code></pre>
+		<p><span class="demoLabel">Feedback in another element:</span>
+			<span class="keepTogether">
+				<span id="targetFeedback">&nbsp;</span><br>
+				<textarea id="targetLength" rows="3" cols="60"></textarea>
+			</span></p>
+		<pre><code class="jsdemo">$('#targetLength').maxlength({
+	showFeedback: true, feedbackTarget: '#targetFeedback'});</code></pre>
+	</div>
+	<div id="events" class="feature">
+		<h2>Events</h2>
+		<p>You can be notified when the textarea has filled via the <code>onFull</code> setting.</p>
+		<p><span class="demoLabel">When full:</span>
+			<textarea id="whenFullLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#whenFullLength').maxlength({truncate: false,
+	onFull: function(overflow) {
+		if (!overflow) { // Notify via an alert
+			alert('The field is full');
+		}
+		else { // Flash styling
+			var self = $(this);
+			self.removeClass('maxlength-overflow');
+			setTimeout(function() {
+					self.addClass('maxlength-overflow');
+				}, 250);
+		}
+	}});</code></pre>
+	</div>
+	<div id="styling" class="feature">
+		<h2>Styling</h2>
+		<p>You can adjust the appearance of the textarea and feedback via CSS.
+			The default is to place the feedback immediately after the textarea
+			with a slightly reduced font size.</p>
+		<p>The textarea is marked with the <code>hasMaxLength</code>
+			class once initialised and any feedback element is marked with the
+			<code>maxlength-feedback</code> class.</p>
+		<p>Both the textarea and its feedback are marked with the <code>maxlength-full</code>
+			class when the textarea is full, and also with the <code>maxlength-overflow</code>
+			class when even more text is entered.</p>
+		<p><span class="demoLabel">Default style:</span>
+			<textarea id="styleLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#styleLength').maxlength();</code></pre>
+		<p><span class="demoLabel">Style used here:</span>
+			<textarea id="hereLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#hereLength').maxlength();</code></pre>
+		<pre><code class="css">.maxlength-feedback { display: inline-block;
+	width: 7em; margin: 0em 1em; vertical-align: top; }</code></pre>
+		<p><span class="demoLabel">Feedback below:</span>
+			<textarea id="belowLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#belowLength').maxlength();</code></pre>
+		<pre><code class="css">#belowLength + .maxlength-feedback { display: block;
+	width: auto; margin-left: 20em; }</code></pre>
+		<p><span class="demoLabel">Overlaid feedback:</span>
+			<textarea id="overlaidLength" rows="3" cols="60"></textarea></p>
+		<pre><code class="jsdemo">$('#overlaidLength').maxlength({feedbackText: '{c}/{m}'});</code></pre>
+		<pre><code class="css">#overlaidLength { padding-top: 0.5em; }
+#overlaidLength + .maxlength-feedback { position: relative;
+	left: -5.25em; top: 1px; width: 4em; padding-right: 0.25em;
+	color: #fff; background-color: #3c8243; text-align: right; }</code></pre>
+	</div>
+	<div id="wild" class="feature">
+		<h2>In the Wild</h2>
+		<p>This tab highlights examples of this plugin in use "in the wild".</p>
+		<div id="wildLinks">
+			<div>
+				<h3><!--a href=""></a--></h3>
+				<p>None as yet.</p>
+			</div>
+		</div>
+		<p style="clear: both;">To add another example, please contact me (kbwood{at}iinet.com.au)
+			and provide the plugin name, the URL of your site, its title,
+			and a short description of its purpose and where/how the plugin is used.</p>
+	</div>
+	<div id="quick" class="feature">
+		<h2>Quick Reference</h2>
+		<p>A full list of all possible settings is shown below.
+			Note that not all would apply in all cases. For more detail see the
+			<a href="maxLengthRef.html">documentation reference</a> page.</p>
+		<pre><code class="js">$(selector).maxlength({
+	max: 200, // Maximum length
+	truncate: true, // True to disallow further input, false to highlight only
+	showFeedback: true, // True to always show user feedback, 'active' for hover/focus only
+	feedbackTarget: null, // jQuery selector or function for element to fill with feedback
+	feedbackText: '{r} characters remaining ({m} maximum)',
+		// Display text for feedback message, use {r} for remaining characters,
+		// {c} for characters entered, {m} for maximum
+	overflowText: '{o} characters too many ({m} maximum)',
+		// Display text when past maximum, use substitutions above
+		// and {o} for characters past maximum
+	onFull: null // Callback when full or overflowing,
+		// receives one parameter: true if overflowing, false if not
+});
+
+$.maxlength.setDefaults(settings) // Change settings for all instances
+
+$(selector).maxlength('option', settings) // Change the instance settings
+$(selector).maxlength('option', name, value) // Change an instance setting
+$(selector).maxlength('option', name) // Retrieve an instance setting
+
+$(selector).maxlength('enable') // Enable the max length functionality
+$(selector).maxlength('disable') // Disable the max length functionality
+
+$(selector).maxlength('destroy') // Remove the max length functionality</code></pre>
+	</div>
+</div>
+<h2>Usage</h2>
+<ol>
+<li>Include the jQuery library in the head section of your page.
+	<pre><code class="html">&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre></li>
+<li>Download and include the jQuery Max Length CSS and JavaScript in the head section of your page.
+	<pre><code class="html">&lt;style type="text/css"&gt;@import "jquery.maxlength.css";&lt;/style&gt;
+&lt;script type="text/javascript" src="jquery.maxlength.js"&gt;&lt;/script&gt;</code></pre>
+    Alternately, you can use the minimised version
+	<code>jquery.maxlength.min.js</code> (5.5K vs 10.9K, 1.7K when zipped).</li>
+<li>Connect the max length functionality to your textareas.
+	<pre><code class="js">$(selector).maxlength();</code></pre>
+	You can include custom settings as part of this process.
+	<pre><code class="js">$(selector).maxlength({max: 300});</code></pre></li>
+</ol>
+<p> For more detail see the
+	<a href="maxlengthRef.html">documentation reference</a> page.
+	Or see a <a href="maxlengthBasics.html">minimal page</a> that you could
+	use as a basis for your own investigations.</p>
+<h2>Comments</h2>
+<p>None as yet.</p>
+<p style="clear: both;">Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<h2><a name="changes">Change History</a></h2>
+<table border="0" id="history" width="100%">
+<tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+<tr><td>1.1.0</td><td>04&nbsp;Aug&nbsp;2012</td><td><ul>
+	<li>Added <code>onFull</code> callback</li>
+	<li>Amalgamated <code>'change'</code> and <code>'settings'</code>
+		commands into <code>'option'</code> command</li>
+	<li>Added <code>'enable'</code>, <code>'disable'</code>, and
+		<code>'curLength'</code> commands</li>
+	<li>Updated underlying plugin framework</li>
+</ul></td></tr>
+<tr><td>1.0.3</td><td>16&nbsp;Jul&nbsp;2011</td><td><ul>
+	<li>Made counting of CR/LF consistent</li>
+	<li>Set alternate feedback correctly</li>
+	<li>Return cursor to bottom of textarea when truncating</li>
+</ul></td></tr>
+<tr><td>1.0.2</td><td>12&nbsp;Mar&nbsp;2011</td><td><ul>
+	<li>Added <code>truncate</code> and <code>overflowText</code> settings</li>
+	<li>Added <code>'active'</code> option for <code>showFeedback</code></li>
+	<li>Added <code>feedbackTarget</code> setting</li>
+	<li>Corrected handling of special characters when full</li>
+</ul></td></tr>
+<tr><td>1.0.1</td><td>15&nbsp;May&nbsp;2010</td><td><ul>
+	<li>Added <code>settings</code> command</li>
+</ul></td></tr>
+<tr><td>1.0.0</td><td>06&nbsp;Feb&nbsp;2010</td><td><ul>
+	<li>Initial release</li>
+</ul></td></tr>
+</table>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

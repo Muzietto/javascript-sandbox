@@ -1,0 +1,1 @@
+(counts['aa-AA'] ? counts['aa-AA']++ : counts['aa-AA'] = 1);

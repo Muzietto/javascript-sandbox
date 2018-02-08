@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Background Position Reference</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "../common/demo.css";
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+</head>
+<body>
+<h1>jQuery Background Position Reference</h1>
+<p>A <a href="http://jquery.com">jQuery</a> plugin
+	that allows the position of a background image to be animated.</p>
+<p>This page provides a documentation reference for working
+	with the plugin <span class="version">v1.1.0</span>.
+	See a <a href="backgroundPos.html">demonstration</a> of the bookmark
+	plugin and download the code from there.</p>
+<p style="text-align: center;"><span id="bookmark"></span></p>
+<div id="tabs">
+	<ul>
+		<li><a href="#usage"><span>Usage</span></a></li>
+	</ul>
+	<div id="usage" class="feature">
+		<h2>Usage</h2>
+		<p>Just animate the background position as you would any other attribute.
+			The name can be either <code>backgroundPosition</code> or
+			<code>'background-position'</code>.</p>
+		<pre><code class="js">$(selector).animate({backgroundPosition: '-100px 0px'});
+$(selector).animate({'background-position': '-100px 0px'});</code></pre>
+		<p>Specify the horizontal and (optionally) vertical offsets for the background.
+			These may be absolute values (e.g. <code>-100px</code> or <code>50px</code>),
+			percentages (e.g. <code>-25%</code> or <code>50%</code>),
+			relative values (e.g. <code>-=200px</code> or <code>+=20%</code>),
+			or named positions (e.g. <code>right</code> or <code>bottom</code>).
+			If the vertical offset is omitted it defaults to '50%'.</p>
+		<pre><code class="js">$(selector).animate({backgroundPosition: '-100px 0px'});
+$(selector).animate({backgroundPosition: '50% -25%'});
+$(selector).animate({backgroundPosition: '+=200px -=100px'});
+$(selector).animate({backgroundPosition: 'right top'});
+$(selector).animate({backgroundPosition: 'bottom'});</code></pre>
+		<p>For the best results do not mix units when animating the background,
+			i.e. always use pixels or percentages.
+			Named positions are converted to percentages before use.
+			If no units are specified <code>'px'</code> is assumed.</p>
+		<p>As for any other animation, you can specify the <code>speed</code>,
+			<code>easing</code>, and a <code>callback</code> function.</p>
+		<pre><code class="js">$(selector).animate({backgroundPosition: '-100px 0px'},
+	2000, 'easeOutBounce', function() {...});</code></pre>
+	</div>
+</div>
+<p>Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

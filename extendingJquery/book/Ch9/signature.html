@@ -1,0 +1,370 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery UI Signature</title>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/south-street/jquery-ui.css" rel="stylesheet">
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "jquery.signature.css";
+@import "../common/demo.css";
+
+.kbw-signature { float: left; width: 400px; height: 200px; }
+</style>
+<!--[if IE]>
+<script type="text/javascript" src="excanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jquery.metadata.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="jquery.signature.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#download').click(function() {
+		window.location = 'jquery.signature.package-1.1.0.zip';
+	});
+	$('#java code').wrap('<div class="showCode" style="width: auto;"><\/div>');
+});
+</script>
+</head>
+<body>
+<h1>jQuery UI Signature</h1>
+<p>A <a href="http://jqueryui.com">jQuery UI</a> plugin
+	that captures or draws a signature.
+	It requires the jQuery UI widget and mouse modules and needs the
+	<a href="http://excanvas.sourceforge.net/"><code>excanvas.js</code></a> add-in for older IE versions.</p>
+<p>The current version is <span class="version">1.1.0</span> and is available 
+	under the <a href="https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt">MIT</a> licence.
+	For more detail see the <a href="signatureRef.html">documentation reference</a> page.
+	Or see a <a href="signatureBasics.html">minimal page</a> that you could
+	use as a basis for your own investigations.</p>
+<p style="text-align: center;">
+	<button type="button" id="download">Download now</button>
+	<span id="bookmark"></span>
+</p>
+<div id="tabs">
+	<ul>
+		<li><a href="#default"><span>Defaults</span></a></li>
+		<li><a href="#options"><span>Options</span></a></li>
+		<li><a href="#events"><span>Events</span></a></li>
+		<li><a href="#save"><span>Save/Restore</span></a></li>
+		<li><a href="#java"><span>Java Regen</span></a></li>
+		<li><a href="#wild"><span>In the Wild</span></a></li>
+		<li><a href="#quick"><span>Quick Ref</span></a></li>
+	</ul>
+	<div id="default" class="feature">
+		<h2>Default Settings</h2>
+		<p>The signature functionality can easily be added to a <code>div</code>
+			with appropriate default settings.<br>
+			You can also remove the signature functionality if it is no longer required,
+			or disable or enable the field to receive input.</p>
+		<p><span class="demoLabel">Default signature:</span></p>
+		<div id="defaultSignature"></div>
+		<p style="clear: both;"><span class="demoLabel">&nbsp;</span>
+			<button type="button" id="removeSignature">Remove</button>
+			<button type="button" id="disableSignature">Disable</button></p>
+		<pre><code class="jsdemo">$('#defaultSignature').signature();
+
+$('#removeSignature').toggle(function() {
+		$(this).text('Re-attach');
+		$('#defaultSignature').signature('destroy');
+	},
+	function() {
+		$(this).text('Remove');
+		$('#defaultSignature').signature();
+	});
+
+$('#disableSignature').toggle(function() {
+		$(this).text('Enable');
+		$('#defaultSignature').signature('disable');
+	},
+	function() {
+		$(this).text('Disable');
+		$('#defaultSignature').signature('enable');
+	});</code></pre>
+		<p style="clear: both;">You can override the defaults globally as shown below:</p>
+		<pre><code class="js">$.extend($.kbw.signature.options, {color: '#0000ff'});</code></pre>
+	</div>
+	<div id="options" class="feature">
+		<h2>Options</h2>
+		<p>Customise the signature functionality through additional settings.</p>
+		<p><span class="demoLabel">Different colours:</span></p>
+		<div id="coloursSignature"></div>
+		<pre><code class="jsdemo">$('#coloursSignature').signature({background: 'blue', color: '#ffffff'});</code></pre>
+		<p><span class="demoLabel">Line thickness:</span></p>
+		<div id="thicknessSignature"></div>
+		<pre><code class="jsdemo">$('#thicknessSignature').signature({thickness: 4});</code></pre>
+		<p><span class="demoLabel">Add a guideline:</span></p>
+		<div id="guidelineSignature"></div>
+		<pre><code class="jsdemo">$('#guidelineSignature').signature({guideline: true});</code></pre>
+		<p><span class="demoLabel">Customise guideline:</span></p>
+		<div id="guideline2Signature"></div>
+		<pre><code class="jsdemo">$('#guideline2Signature').signature({guideline: true,
+	guidelineOffset: 25, guidelineIndent: 20, guidelineColor: '#ff0000'});</code></pre>
+		<p><span class="demoLabel">Via metadata:</span></p>
+		<div id="metadataSignature" class="{signature: {guideline: true, guidelineColor: '#ff0000'}}"></div>
+		<pre><code class="htmldemo">&lt;div id="metadataSignature" class="{signature: {guideline: true, guidelineColor: '#ff0000'}}"&gt;&lt;/div&gt;</code></pre>
+		<pre><code class="jsdemo">$('#metadataSignature').signature();</code></pre>
+	</div>
+	<div id="events" class="feature">
+		<h2>Events</h2>
+		<p>You can be notified when the signature has changed via the <code>change</code> setting.
+			And you can erase the signature with the <code>clear</code> command and
+			test for any content via the <code>isEmpty</code> command.</p>
+		<p><span class="demoLabel">When changed:</span></p>
+		<div id="whenChangedSignature"></div>
+		<p style="clear: both;"><span class="demoLabel">&nbsp;</span>
+			<button type="button" id="clearButton">Clear</button>
+			<button type="button" id="isEmptyButton">Is empty?</button></p>
+		<pre><code class="jsdemo">$('#whenChangedSignature').signature({
+	change: function(event, ui) {
+		alert('Signature changed');
+	}});
+
+$('#clearButton').click(function() {
+	$('#whenChangedSignature').signature('clear');
+});
+
+$('#isEmptyButton').click(function() {
+	alert('Is empty? ' + $('#whenChangedSignature').signature('isEmpty'));
+});</code></pre>
+	</div>
+	<div id="save" class="feature">
+		<h2>Save/Restore</h2>
+		<p>Extract the signature as a JSON value, and later re-draw it from that value.</p>
+		<p><span class="demoLabel">Capture signature:</span></p>
+		<div id="captureSignature"></div>
+		<p style="clear: both;"><span class="demoLabel">&nbsp;</span>
+			<button type="button" id="clear2Button">Clear</button></p>
+		<pre><code class="jsdemo">$('#captureSignature').signature({syncField: '#signatureJSON'});
+
+$('#clear2Button').click(function() {
+	$('#captureSignature').signature('clear');
+});</code></pre>
+		<p><span class="demoLabel">Signature JSON:</span>
+			<textarea id="signatureJSON" rows="5" cols="50" readonly></textarea></p>
+		<p><span class="demoLabel">&nbsp;</span>
+			<button type="button" id="redrawButton">Re-draw</button></p>
+		<p><span class="demoLabel">Re-draw signature:</span></p>
+		<div id="redrawSignature"></div>
+		<pre><code class="jsdemo">$('#redrawButton').click(function() {
+	$('#redrawSignature').signature('draw', $('#signatureJSON').val());
+});
+
+$('#redrawSignature').signature({disabled: true});
+</code></pre>
+	</div>
+	<div id="java" class="feature">
+		<h2>Java Regeneration</h2>
+		<p>You can regenerate an image from the signature JSON text on the server.
+			The following shows how to do this in Java. You would call this code as follows:</p>
+		<pre><code>SigGen.generateSignature(jsonEncoding, signatureOut);</code></pre>
+		<pre><code class="java">import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+
+public class SigGen {
+
+    private static final String IMAGE_FORMAT = "png";
+    private static final int SIGNATURE_HEIGHT = 200;
+    private static final int SIGNATURE_WIDTH = 400;
+
+    /**
+     * A point along a line within a signature.
+     */
+    private static class Point {
+
+        private int x;
+        private int y;
+
+        public Point(float x, float y) {
+            this.x = Math.round(x);
+            this.y = Math.round(y);
+        }
+    }
+
+    /**
+     * Extract a signature from its JSON encoding and redraw it as an image.
+     *
+     * @param  jsonEncoding  the JSON representation of the signature
+     * @param  output        the destination stream for the image
+     * @throws  IOException  if a problem writing the signature
+     */
+    public static void generateSignature(String jsonEncoding, OutputStream output)
+            throws IOException {
+        output.write(redrawSignature(extractSignature(jsonEncoding)));
+        output.close();
+    }
+
+    /**
+     * Extract the signature lines and points from the JSON encoding.
+     *
+     * @param  jsonEncoding  the JSON representation of the signature
+     * @return  the retrieved lines and points
+     */
+    private static List&lt;List&lt;Point&gt;&gt; extractSignature(String jsonEncoding) {
+        List&lt;List&lt;Point&gt;&gt; lines = new ArrayList&lt;List&lt;Point&gt;&gt;();
+        Matcher lineMatcher =
+                Pattern.compile("(\\[(?:,?\\[-?[\\d\\.]+,-?[\\d\\.]+\\])+\\])").
+                matcher(jsonEncoding);
+        while (lineMatcher.find()) {
+            Matcher pointMatcher =
+                    Pattern.compile("\\[(-?[\\d\\.]+),(-?[\\d\\.]+)\\]").
+                    matcher(lineMatcher.group(1));
+            List&lt;Point&gt; line = new ArrayList&lt;Point&gt;();
+            lines.add(line);
+            while (pointMatcher.find()) {
+                line.add(new Point(Float.parseFloat(pointMatcher.group(1)),
+                        Float.parseFloat(pointMatcher.group(2))));
+            }
+        }
+        return lines;
+    }
+
+    /**
+     * Redraw the signature from its lines definition.
+     *
+     * @param  lines  the individual lines in the signature
+     * @return  the corresponding signature image
+     * @throws  IOException  if a problem generating the signature
+     */
+    private static byte[] redrawSignature(List&lt;List&lt;Point&gt;&gt; lines) throws IOException {
+        BufferedImage signature = new BufferedImage(
+                SIGNATURE_WIDTH, SIGNATURE_HEIGHT, BufferedImage.TYPE_BYTE_GRAY);
+        Graphics2D g = (Graphics2D)signature.getGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, signature.getWidth(), signature.getHeight());
+        g.setColor(Color.BLACK);
+        g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        Point lastPoint = null;
+        for (List&lt;Point&gt; line : lines) {
+            for (Point point : line) {
+                if (lastPoint != null) {
+                    g.drawLine(lastPoint.x, lastPoint.y, point.x, point.y);
+                }
+                lastPoint = point;
+            }
+            lastPoint = null;
+        }
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ImageIO.write(signature, IMAGE_FORMAT, output);
+        return output.toByteArray();
+    }
+}
+</code></pre>
+	</div>
+	<div id="wild" class="feature">
+		<h2>In the Wild</h2>
+		<p>This tab highlights examples of this plugin in use "in the wild".</p>
+		<div id="wildLinks">
+			<div>
+				<h3><!--a href=""></a--></h3>
+				<p>None as yet.</p>
+			</div>
+		</div>
+		<p style="clear: both;">To add another example, please contact me (kbwood{at}iinet.com.au)
+			and provide the plugin name, the URL of your site, its title,
+			and a short description of its purpose and where/how the plugin is used.</p>
+	</div>
+	<div id="quick" class="feature">
+		<h2>Quick Reference</h2>
+		<p>A full list of all possible settings is shown below.
+			Note that not all would apply in all cases. For more detail see the
+			<a href="signatureRef.html">documentation reference</a> page.</p>
+		<pre><code class="js">$(selector).signature({
+	background: '#ffffff', // Colour of the background
+	color: '#000000', // Colour of the signature
+	thickness: 2, // Thickness of the lines
+	guideline: false, // Add a guide line or not?
+	guidelineColor: '#a0a0a0', // Guide line colour
+	guidelineOffset: 25, // Guide line offset from the bottom
+	guidelineIndent: 10, // Guide line indent from the edges
+	// Error message when no canvas
+	notAvailable: 'Your browser doesn\'t support signing',
+	syncField: null, // Selector for synchronised text field
+	change: null // Callback when signature changed
+});
+
+$.kbw.signature.options // Access settings for all instances
+
+$(selector).signature('option', settings) // Change the instance settings
+$(selector).signature('option', name, value) // Change an instance setting
+
+$(selector).signature('option') // Retrieve the instance settings
+$(selector).signature('option', name) // Retrieve an instance setting
+
+$(selector).signature('enable') // Enable the signature functionality
+$(selector).signature('disable') // Disable the signature functionality
+
+$(selector).signature('destroy') // Remove the signature functionality
+
+$(selector).signature('clear') // Erase any signature
+$(selector).signature('isEmpty') // Determine if there is no signature
+$(selector).signature('toJSON') // Convert the signature to JSON
+$(selector).signature('draw', json) // Re-draw the signature from JSON</code></pre>
+	</div>
+</div>
+<h2>Usage</h2>
+<ol>
+<li>Include the jQuery and jQuery UI libraries and CSS in the head section of your page.
+	<pre><code class="html">&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/south-street/jquery-ui.css" rel="stylesheet"&gt;
+&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"&gt;&lt;/script&gt;</code></pre></li>
+<li>Conditionally include the ExCanvas add-in for older versions of IE.
+	<pre><code class="html">&lt;!--[if IE]&gt;
+&lt;script type="text/javascript" src="js/excanvas.js"&gt;&lt;/script&gt;
+&lt;![endif]--&gt;</code></pre></li>
+<li>Download and include the jQuery UI Signature CSS and JavaScript in the head section of your page.
+	<pre><code class="html">&lt;link type="text/css" href="css/jquery.signature.css" rel="stylesheet"&gt;
+&lt;script type="text/javascript" src="js/jquery.signature.js"&gt;&lt;/script&gt;</code></pre>
+    Alternately, you can use the minified version
+	<code>jquery.signature.min.js</code> (4.0K vs 7.2K, 1.5K when zipped).</li>
+<li>Connect the signature functionality to your divs.
+	<pre><code class="js">$(selector).signature();</code></pre>
+	You can include custom settings as part of this process.
+	<pre><code class="js">$(selector).signature({color: '#0000ff'});</code></pre></li>
+</ol>
+<p> For more detail see the
+	<a href="signatureRef.html">documentation reference</a> page.
+	Or see a <a href="signatureBasics.html">minimal page</a> that you could
+	use as a basis for your own investigations.</p>
+<h2>Comments</h2>
+<blockquote><p>I am using your signature pad plugin. Its working great !!</p></blockquote>
+<div><cite>Shantanu Panse</cite></div>
+<p style="clear: both;">Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<h2><a name="changes">Change History</a></h2>
+<table border="0" id="history" width="100%">
+<tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+<tr><td>1.1.0</td><td>19&nbsp;Jan&nbsp;2013</td><td><ul>
+	<li>Updated for jQuery UI 1.9</li>
+	<li>Better disabled handling</li>
+	<li>Allow re-drawing from JSON text directly</li>
+</ul></td></tr>
+<tr><td>1.0.0</td><td>30&nbsp;Jun&nbsp;2012</td><td><ul>
+	<li>Initial release</li>
+</ul></td></tr>
+</table>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

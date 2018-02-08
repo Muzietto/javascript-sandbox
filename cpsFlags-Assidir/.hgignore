@@ -1,0 +1,11 @@
+glob:lib/jquery-1.4.4.js
+glob:YUI-CpsFlagsTests.htm
+glob:lib/MarcoTestCase.js
+glob:lib/marcoYuiLogger.css
+glob:lib/stub.js
+glob:lib/tdd.js
+glob:src/adeguatezzaCpsCode_attempt01.js
+glob:src/adeguatezzaStateMachine.js
+glob:src/cpsFlags.js
+glob:test/cpsAssidir.YUI.test.js
+glob:test/cpsFlags.YUI.test.js

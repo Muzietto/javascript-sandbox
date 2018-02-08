@@ -1,0 +1,102 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Adding jQuery Validation Rules</title>
+<style type="text/css">
+@import "../common/demo.css";
+
+label { display: inline-block; width: 10em; }
+label.error { width: auto; margin-left: 0.5em; color: red; font-weight: bold; }
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.validate.js"></script>
+<script type="text/javascript" src="jquery.validate.ext.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	var allVotes = {
+		totals: [4, 'select.item']
+	};
+	$('#myform').validate({
+		groups: {
+			items: 'item1 item2 item3 item4 item5'
+		},
+		rules: {
+			ssn1: {
+				required: true,
+				matches: '^\\d{3}-\\d{2}-\\d{4}$'
+			},
+			ssn2: {
+				matches: /^\d{3}-\d{2}-\d{4}$/
+			},
+			ssn3: {
+				required: true,
+				ssn: true
+			},
+			item1: allVotes,
+			item2: allVotes,
+			item3: allVotes,
+			item4: allVotes,
+			item5: allVotes
+		},
+		messages: {
+			ssn2: {
+				matches: 'Please enter a valid SSN'
+			}
+		},
+		errorPlacement: function(error, element) {
+			if (element.hasClass('item')) {
+				error.appendTo(element.closest('fieldset'));
+			}
+			else {
+				error.insertAfter(element);
+			}
+		},
+		submitHandler: function(form) {
+			alert('Thank you for your response');
+		}
+	});
+});
+</script>
+</head>
+<body>
+<h1>Adding jQuery Validation Rules</h1>
+<p>Demonstrating new validation rules for the
+	<a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">validate plugin</a>.</p>
+<form id="myform" action="" method="get">
+	<fieldset>
+		<legend>Dependent SSNs</legend>
+		<p><label for="ssn1">Dependent 1:</label> <input type="text" id="ssn1" name="ssn1"></p>
+		<p><label for="ssn2">Dependent 2:</label> <input type="text" id="ssn2" name="ssn2"></p>
+		<p><label for="ssn3">Dependent 3:</label> <input type="text" id="ssn3" name="ssn3"></p>
+	</fieldset>
+	<fieldset>
+		<legend>Survey</legend>
+		<p>Which drinks do you prefer?</p>
+		<p>(Please assign your four votes between these items)</p>
+		<p><label for="item1">Beer:</label>
+			<select id="item1" name="item1" class="item"><option value="0">0</option>
+				<option value="1">1</option><option value="2">2</option>
+				<option value="3">3</option><option value="4">4</option></select></p>
+		<p><label for="item2">Wine:</label>
+			<select id="item2" name="item2" class="item"><option value="0">0</option>
+				<option value="1">1</option><option value="2">2</option>
+				<option value="3">3</option><option value="4">4</option></select></p>
+		<p><label for="item3">Spirits:</label>
+			<select id="item3" name="item3" class="item"><option value="0">0</option>
+				<option value="1">1</option><option value="2">2</option>
+				<option value="3">3</option><option value="4">4</option></select></p>
+		<p><label for="item4">Juice:</label>
+			<select id="item4" name="item4" class="item"><option value="0">0</option>
+				<option value="1">1</option><option value="2">2</option>
+				<option value="3">3</option><option value="4">4</option></select></p>
+		<p><label for="item5">Water:</label>
+			<select id="item5" name="item5" class="item"><option value="0">0</option>
+				<option value="1">1</option><option value="2">2</option>
+				<option value="3">3</option><option value="4">4</option></select></p>
+	</fieldset>
+	<p><label>&nbsp;</label> <input type="submit" value="Submit"></p>
+</form>
+</body>
+</html>

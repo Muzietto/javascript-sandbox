@@ -1,0 +1,178 @@
+
+var Aimed = {};
+
+Aimed.path = function(origin, destination, distance, subPaths) {
+	var _origin = origin;
+	var _destination = destination;
+	var _distance = distance;
+	var _subPaths = [];
+	if (subPaths !== undefined) _subPaths = subPaths;
+	var _checkSubPaths = function() {
+		if (_subPaths.length === 0) _subPaths.push(Aimed.path(_origin, _destination, _distance));
+	};
+	return {
+		origin : function() {
+			return _origin;
+		},
+		setOrigin : function(anOrigin) {
+			_origin = anOrigin;
+			return this;
+		},
+		destination : function() {
+			return _destination;
+		},
+		setDestination : function(aDestination) {
+			_destination = aDestination;
+			return this;
+		},
+		distance : function() {
+			return _distance;
+		},
+		setDistance : function(aDistance) {
+			_distance = aDistance;
+			return this;
+		},
+		order : function() {
+			var order = this.subPaths().length;
+			if (order === 0) {
+				order = 1
+			}
+			return order;
+		},
+		equals : function(aPath) {
+			return (this.origin() === aPath.origin() && this.destination() === aPath.destination()  && this.distance() === aPath.distance());
+		},
+		toString : function() {
+			return ''+this.origin()+this.distance()+'/'+this.order()+this.destination();
+		},
+		subPaths : function() {
+			return _subPaths;
+		},
+		setSubPaths : function(otherPaths) {
+			_subPaths = otherPaths;
+			return this;
+		},
+		isComposableWith : function(aPath) {
+			return (aPath.origin() === this.destination());
+		},
+		composeWith : function(aPath) {
+			if (this.isComposableWith(aPath)) {
+				_checkSubPaths();
+				this.setDestination(aPath.destination());
+				this.setDistance(this.distance() + aPath.distance());
+				if (aPath.order() === 1) this.subPaths().push(aPath);
+				else {
+					that = this;
+					aPath.subPaths().forEach(
+						function(subPath) {
+							that.subPaths().push(subPath);
+						}
+					);
+				}
+				return this;
+			} else {
+				throw {
+					name : 'UnsupportedOperationException',
+					message : 'paths to be composed must chain correctly'
+				}
+			};
+		},
+		inverted : function() {
+			var tempOrigin = this.origin();
+			this.setOrigin(this.destination());
+			this.setDestination(tempOrigin);
+			if (this.order() === 1) {
+				return this;
+			} else {
+				var myPaths = this.subPaths().slice();
+				for (i=0; i<myPaths.length; i++) {
+					myPaths[i].inverted();
+				}
+				return this.setSubPaths(myPaths.reverse());
+			}
+		},
+		detached : function() {
+			return Aimed.path(this.origin(), this.destination(), this.distance(), this.subPaths().slice());
+		}
+	};
+};
+
+Aimed.pathSet = function() {
+	var _paths = [];
+	return {
+		paths : function() {
+			return _paths;
+		},
+		setPaths : function(somePaths) {
+			_paths = somePaths;
+			return this;
+		},
+		addPath : function(aPath) {
+			if (!this.contains(aPath)) this.paths().push(aPath);
+			return this;
+		},
+		contains : function(aPath) {
+			return this.paths().some(
+				function(myPath) {
+					return (myPath.equals(aPath));
+				});
+		},
+		size : function() {
+			return this.paths().length;
+		},
+		from : function(endpoint) {
+			var filteredArray = this.paths().filter(
+				function(aPath) {
+					return (aPath.origin() === endpoint);
+				});
+			return Aimed.pathSet().setPaths(filteredArray);
+		},
+		to : function(endpoint) {
+			var filteredArray = this.paths().filter(
+				function(aPath) {
+					return (aPath.destination() === endpoint);
+				});
+			return Aimed.pathSet().setPaths(filteredArray);
+		},
+		through : function(stopover) {
+			var filteredArray = this.paths().filter(
+				function(aPath) {
+					if (aPath.order() === 1) return false;
+					return (aPath.subPaths().some(
+						function(aSubPath) {
+							return (aSubPath.destination() === stopover || aSubPath.origin() === stopover);
+					}));
+				});
+			return Aimed.pathSet().setPaths(filteredArray);
+		},
+		havingOrder : function(anOrder) {
+			var filteredArray = this.paths().filter(
+				function(aPath) {
+					return (aPath.order() === anOrder);
+				});
+			return Aimed.pathSet().setPaths(filteredArray);
+		},
+		composed : function() {
+			var composedPathSet = Aimed.pathSet().setPaths(this.paths().slice());
+			var thesePaths = this.paths().slice();
+			thesePaths.forEach(
+				function (xPath) {
+					thesePaths.forEach(
+						function (yPath) {
+							if (xPath.isComposableWith(yPath)) composedPathSet.addPath(xPath.detached().composeWith(yPath));
+						}
+					);
+				}
+			);
+			return this.setPaths(composedPathSet.paths());
+		},
+		exp : function(n) {
+			var expandedPathSet = Aimed.pathSet().setPaths(this.paths().slice());
+			while (n>0) {
+				expandedPathSet.composed();
+				n--;
+			}
+			return this.setPaths(expandedPathSet.paths());
+		}
+	}
+};

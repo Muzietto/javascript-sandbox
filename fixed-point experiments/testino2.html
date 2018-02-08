@@ -1,0 +1,45 @@
+<head><title>cup cop</title></head>
+<body>
+<script>
+//let from = 2
+//let to = 5
+//let step = 1
+
+function range(from, to, step) {
+
+  return vvv([], from, xxx);
+
+  //return xxx([], from, xxx);
+
+  function vvv(arra, from2, f) {
+    return f(arra, from2, f);
+  }
+
+  function xxx(acc, curr, f) {
+    if (curr > to) return acc;
+    return f(acc.concat([curr]), curr + step, f);
+  }
+
+  function rrr(acc, curr) {
+    if (curr > to) return acc;
+    return rrr(acc.concat([curr]), curr+step);
+  }
+}
+
+function range_curried(from, to, step) {
+  return function range_helper(acc, curr) {
+    return (curr > to) ? acc : range_helper(acc.concat([curr]), curr + step)
+  }
+}
+
+console.log(range(2, 5, 1))
+
+console.log(range_curried(2, 5, 1)([], 2));
+
+console.log(((from, to, step) => (
+  ((f, acc, curr) => f(acc, curr, f))
+  ((acc, curr, f) => (curr > to) ? acc : f(acc.concat([curr]), curr+step, f), [], from)
+))(2,5,1));
+</script>
+</body>
+</html>

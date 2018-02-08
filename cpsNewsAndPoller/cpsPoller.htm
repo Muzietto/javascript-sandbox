@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>CPS POLLER</title>
+    <!-- jQuery && YUI stuff BEGIN -->
+    <script type="text/javascript" src="../jQueryStuff/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="../jQueryStuff/jquery-jtemplates.js"></script>
+    <script type="text/javascript" src="../jQueryStuff/underscore-min.js"></script>
+    <!-- jQuery stuff END -->
+    <!-- Code -->
+    <script type="text/javascript" src="cpsPoller.js"></script>
+    <link rel="stylesheet" href="cpsPoller.css" type="text/css" />
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // si prende a presto il minimo necessario del namespace BASKET
+            BASKET.htmlClient = CPS_POLLER.htmlClient();
+            var pollerView = CPS_POLLER.viewWidget($('#containerDiv1'), $('#carrelloWidgetTemplate'));
+            var pollerController = CPS_POLLER.pollerController(pollerView, BASKET.htmlClient);
+            pollerView.setController(pollerController);
+            BASKET.controller = pollerController;
+            BASKET.view = pollerView;
+            pollerController.initialize();
+            $('#htmlClientStatusCb').attr('checked', false);
+
+        });
+
+    </script>
+</head>
+<body style="background-color: #F5F5F5;">
+    <div style="width: 705px; height:300px;margin: 0 auto; padding-top: 40px; background-color: white;position:relative;">
+
+        <div id="containerDiv1">
+        </div>
+        <div id="containerDiv2" style="position:absolute;bottom:0px;left:0px;background-color:yellow;">
+            <div class="poller_switchboard">
+                <input id="htmlClientStatusCb" type="checkbox" onchange="BASKET.view.onSetHtmlClientUrl($(this));return false;"/><label>HTML
+                    Client Status</label>
+            </div>
+            <div class="poller_switchboard">
+            <label id="basketMessageBoard" style="color:red;display:none;"></label>
+            </div>
+        <br class="clear"/>
+        </div>
+    </div>
+<script type="text/html" id="carrelloWidgetTemplate">
+  <div class="carrello_window" id="{$T.guid}">
+    <div class="50pc left">
+      <table>
+        <tr>
+          <td>Elenco pagine</td>
+          <td></td>
+        </tr>
+        {#foreach $T.basketItems as item}
+        <tr>
+          <td>
+            {$T.item.cntTitle}
+          </td>
+          <td>
+            <a href="#" onclick="BASKET.view.onRemoveFromBasket({$T.item.cntId}); return false;">X</a>
+          </td>
+        </tr>
+        {#/for}
+      </table>
+    </div>
+    <div class="50pc left">
+      <a class="left basketPopupAnchor" href="#" onclick="BASKET.view.onEmptyBasket(); return false;">Svuota il basket</a>
+      <a class="left basketPopupAnchor" href="#" onclick="BASKET.view.onHideWidget(); return false;">Chiudi</a>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="basketMessageBoard" class="basket_message_board"></div>
+    <div id="basketPopupHandle" style="position:absolute;"></div>
+    <hr class="basketPopupHr"></hr>
+    <div class="left">
+      <div class="left">
+        SALVA COME
+      </div>
+      <div class="clear"></div>
+      <div class="left exportBasketIcon">
+        <a href="#" onclick="BASKET.view.onBasket2Pdf(); return false;">PDF</a>
+      </div>
+      <div class="left exportBasketIcon">
+        <a href="#" onclick="BASKET.view.onBasket2Ppt(); return false;">PPT</a>
+      </div>
+      <div class="left exportBasketIcon">
+        <a href="#" onclick="BASKET.view.onBasket2Zip(); return false;">ZIP</a>
+      </div>
+    </div>
+    <div class="left">
+      <div class="left">
+        INVIA
+      </div>
+      <div class="clear"></div>
+      <div class="left exportBasketIcon">
+        <a href="#" onclick="BASKET.view.onBasket2Ipad(); return false;">IPAD</a>
+      </div>
+    </div>
+  </div>
+</script>
+<script type="text/html" id="carrelloDownloadWidgetTemplate">
+    <div class="carrello_download_widget_template">
+        {#if ($T.guid)}
+            <a href="{$T.url}" target="_blank" class="basket_file_download_anchor">
+                <label>{$T.title}</label>
+            </a>
+        {#else}
+            <label>please wait...</label>
+        {#/if}
+    </div>
+</script>
+</body>
+</html>

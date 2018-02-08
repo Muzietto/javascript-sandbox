@@ -1,0 +1,42 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Adding jQuery Implode Effect</title>
+<style type="text/css">
+@import "../common/demo.css";
+
+#feedback { display: inline-block; width: 100px; }
+#target { display: inline-block; width: 400px; height: 220px; padding: 5px; border: 2px solid #080; }
+#target img { float: right; }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jquery.ui.effect-implode.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#toggle').click(function() {
+		$('#feedback').text('');
+		$('#target').toggle($('#effect').val(),
+			{pieces: parseInt($('#pieces').val())}, 1000, function() {
+				$('#feedback').text('Done');
+			});
+	});
+});
+</script>
+</head>
+<body>
+<h1>Adding jQuery Implode Effect</h1>
+<p>
+	<select id="effect"><option value="implode">Implode</option><option value="explode">Explode</option></select>
+	<select id="pieces"><option>4</option><option selected>9</option><option>16</option><option>25</option></select>
+	<button type="button" id="toggle">Toggle</button>
+</p>
+<div id="feedback"></div>
+<div id="target">
+	<img src="uluru.jpg" alt="Uluru">
+	<p>Most visitors would have seen photographs, or advertisements featuring Uluru, but nothing prepares you for the physical impact of this vast monolith. Its sheer immensity dwarfs everything around it. Uluru has acquired its reputation not just because it is such a unique landform, but also because of the effect the sun has on its colours and appearance.</p>
+</div>
+</body>
+</html>

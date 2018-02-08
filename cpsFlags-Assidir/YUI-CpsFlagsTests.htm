@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+		<title>YUI CPS FLAGS TESTS</title>
+	
+		<!-- Required BEGIN-->
+		<script type="text/javascript" src="../yui_2.7.0b/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+		<script type="text/javascript" src="../yui_2.7.0b/build/logger/logger-min.js"></script>
+		<script type="text/javascript" src="../yui_2.7.0b/build/yuitest/yuitest.js"></script>
+		<script type="text/javascript" src="lib/jquery-1.4.4.js"></script>
+		<link rel="stylesheet" href="lib/marcoYuiLogger.css" type="text/css"/>
+		<!-- Required END-->
+		
+		<!-- Code Under Testing -->
+		<script type="text/javascript" src="src/adeguatezzaStateMachine.js"></script>
+		<script type="text/javascript" src="src/cpsFlags.js"></script>
+		
+		<!-- Test Set -->
+		<script type="text/javascript" src="test/cpsFlags.YUI.test.js"></script>
+	
+	</head>
+	<body class="yui-skin-sam">
+	
+		<div id="testLogger" class="yui-log" style="width: 90% !important"></div>
+		
+		<input type="button" value="Start Test" onclick="YAHOO.tool.TestRunner.run();"/>
+		
+	</body>
+</html>

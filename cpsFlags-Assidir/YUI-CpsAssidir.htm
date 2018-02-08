@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>YUI CPS ASSIDIR TESTS</title>
+    <!-- Required BEGIN-->
+    <script type="text/javascript" src="../yui_2.7.0b/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="../yui_2.7.0b/build/logger/logger-min.js"></script>
+    <script type="text/javascript" src="../yui_2.7.0b/build/yuitest/yuitest.js"></script>
+    <script type="text/javascript" src="lib/jquery-1.7.1.js"></script>
+    <link rel="stylesheet" href="lib/marcoYuiLogger.css" type="text/css" />
+    <!-- Required END-->
+    <!-- Code Under Testing -->
+    <script type="text/javascript" src="src/cpsAssidir.js"></script>
+    <!-- Test Set -->
+    <!--script type="text/javascript" src="test/cpsAssidir.YUI.test.js"></script-->
+    <!-- Code Under Testing -->
+    <script type="text/javascript" src="src/presentazioneCpsCode.js"></script>
+    <script type="text/javascript" src="src/adeguatezzaCpsCode.js"></script>
+</head>
+<body class="yui-skin-sam">
+    <div id="testLogger" class="yui-log" style="width: 90% !important">
+    </div>
+    <script type="text/html" id="listatoPreventiviTemplate">
+      <![CDATA[
+            ]]>
+    </script>
+    <script type="text/javascript">
+
+        var STATEMACHINE = {};
+
+        (function () {
+
+
+            STATEMACHINE.loadPrese = function (view) {
+                view.unbindAll();
+
+                view.bind(PRESE.autorizzoHandler);
+                view.bind('[name=AUTORIZZO]', CPAS.genericCheckboxCollector, 'collect');
+                view.bind('#PREMIO_1', CPAS.genericSelectedSelectValidator('[name=PREMIO_1]'), 'validate');
+                view.bind('#PREMIO_1', CPAS.genericTextCollector, 'collect');
+                view.bind('#RESET_PRESENTAZIONE', PRESE.resetClickHandler, 'click');
+                view.bind('#NEXT_PRESENTAZIONE', PRESE.nextClickHandler, 'click');
+
+                alert('View PRESENTAZIONE preparata; ADEGUATEZZA è inerte');
+            };
+
+            STATEMACHINE.loadAdegu = function (view) {
+                view.unbindAll();
+
+                view.bind('#PREMIO_2', ADEGU.premio2Validator, 'validate');
+                view.bind('#PREMIO_2', CPAS.genericTextCollector, 'collect');
+                view.bind(ADEGU.rispondoHandler);
+                view.bind(ADEGU.protettoHandler);
+                view.bind('#PREVIOUS_ADEGUATEZZA', ADEGU.previousClickHandler, 'click');
+                view.bind('#CANCEL_ADEGUATEZZA', ADEGU.cancelClickHandler, 'click');
+                view.bind('#NEXT_ADEGUATEZZA', ADEGU.nextClickHandler, 'click');
+
+                alert('View ADEGUATEZZA preparata; PRESENTAZIONE è inerte');
+            };
+        })();
+
+
+        $(document).ready(function () {
+
+            CPAS.model = {};
+            var view = CPAS.view(CPAS.model);
+
+            STATEMACHINE.loadPrese(view);
+
+        });
+    </script>
+    <div id="presentazioneDiv">
+        <div style="float: left; width: 290px; border: 2px solid green; margin: 10px; padding: 10px;min-height: 400px;">
+    	<h2>PRESENTAZIONE</h2>
+            <div style="border: 1px solid red; margin: 10px; padding: 5px; width: 140px;" class="validation_placeholder">
+                <label style="display: block;">
+                    AUTORIZZO</label>
+                <input type="checkbox" name="AUTORIZZO" value="STAMPA" id="AUTORIZZO_STAMPA" />STAMPA<br />
+                <input type="checkbox" name="AUTORIZZO" value="TV" id="AUTORIZZO_TV" />TV<br />
+            </div>
+            <div style="border: 1px solid lime; margin: 10px; padding: 5px; width: 152px;" class="validation_placeholder">
+                <label style="display: block;">
+                    PREMIO_1</label>
+                <select name="PREMIO_1" id="PREMIO_1" style="width: 150px;">
+                    <option value="">???</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+            </div>
+            <button id="RESET_PRESENTAZIONE">
+                RESET</button>
+            <button id="NEXT_PRESENTAZIONE">
+                NEXT</button>
+        </div>
+    </div>
+    <div clear="both"></div>
+    <div id="adeguatezzaDiv">
+        <div style="float: left; width: 290px; border: 2px solid green; margin: 10px; padding: 10px; min-height: 400px;">
+    	<h2>ADEGUATEZZA</h2>
+            <div style="border: 1px solid red; margin: 10px; padding: 5px; width: 140px;" class="validation_placeholder">
+                <label style="display: block;"> RISPONDO</label>
+                <input type="radio" name="RISPONDO" value="SI" id="RISPONDO_SI" />SI<br />
+                <input type="radio" name="RISPONDO" value="NO" id="RISPONDO_NO" />NO<br />
+            </div>
+            <div style="border: 1px solid green; margin: 10px; padding: 5px; width: 140px;" class="validation_placeholder">
+                <label style="display: block;">
+                    PROTETTO</label>
+                <input type="radio" name="PROTETTO" value="SI" id="PROTETTO_SI" />SI<br />
+                <input type="radio" name="PROTETTO" value="NO" id="PROTETTO_NO" />NO<br />
+                <input type="radio" name="PROTETTO" value="NR" id="PROTETTO_NR" />NR<br />
+            </div>
+            <div style="border: 1px solid blue; margin: 10px; padding: 5px; width: 160px;" class="validation_placeholder">
+                <label style="display: block;">
+                    PREMIO_2</label>
+                <input type="text" name="PREMIO_2" id="PREMIO_2" /><br />
+            </div>
+            <div style="border: 1px solid yellow; margin: 10px; padding: 5px; width: 238px;">
+                <button id="PREVIOUS_ADEGUATEZZA">
+                    PREVIOUS</button>
+                <button id="CANCEL_ADEGUATEZZA">
+                    CANCEL</button>
+                <button id="NEXT_ADEGUATEZZA">
+                    NEXT</button>
+            </div>
+            <div id="confermaDiv" style="border: 1px solid lime; margin: 10px; padding: 5px;
+                width: 260px; display: none;">
+                Prego confermare i seguenti punti:<br />
+                <ul id="puntiDaConfermareUl">
+                </ul>
+                <br />
+                <a id="CONFERMA_SI" style="float: left; margin-left: 40px;">SI</a> <a id="CONFERMA_CANCEL"
+                    style="float: right; margin-right: 40px;">Cancel</a>
+                <br clear="both" />
+            </div>
+        </div>
+        <div style="float: left; width: 290px; border: 2px solid green; margin: 10px; padding: 10px;">
+            <div id="risultatiDiv" style="height: 350px; width: 270px; border: 1px solid black;">
+                <h4>
+                    MODEL</h4>
+            </div>
+        </div>
+    </div>
+    <script type="text/html" id="listatoPreventiviTemplateSample">
+      <![CDATA[
+       <div class="preventivi_window" id="{$T.guid}">
+        <div class="preventivi_header_div">
+            <div style="float: right;"><a title="Vai al prossimo schermo" href="#" id="{$T.currentStateName}_Next" onclick="ASD.gestionePreventivi.view.onNext('{$T.currentStateName}')">
+                <img alt="Vai al prossimo schermo" src="/static/img/preventiviTemplateBanners/{$T.currentStateName}.jpg"></img></a></div>
+            <label>PREVENTIVI ON-LINE</label>
+            <div class="clear"></div>
+        </div>
+        <div style="position:relative;">
+          <div id="preventivoDownloadPopupDiv" style="display:none;">
+            <p>Clicca per scaricare il preventivo:</p>
+            <a id="preventivoDownloadPopupAnchor" target="_blank" href="#" title="clicca per scaricare il preventivo"></a><br/>
+            <a id="preventivoDownloadPopupDismiss" href="#" onclick="$('#preventivoDownloadPopupDiv').hide(); return false;" title="clicca per chiudere questo popup">chiudi</a>
+            <div class="clear"/>
+          </div>
+        </div>
+        <table class="listato_preventivi_table" cellspacing="1" cellpadding="1" border="2">
+          {#if $T.listaPrelis.WSLISTAPREV.length === 0}
+          <label class="bolder block_label">Al momento non disponiamo di preventivi a te intestati</label>
+          {#else}
+          <tr class="listato_preventivi_header">
+            <td>Preventivi
+            </td>
+            <td>
+              <label>N. Preventivo</label>
+            </td>
+            <td>
+              <label>Data</label>
+            </td>
+            <td>
+              <label>Prodotto</label>
+            </td>
+            <td>
+              <label>Stato</label>
+            </td>
+            <td>
+              <label>Delete</label>
+            </td>
+            <td></td>
+          </tr>
+          {#/if}
+          {#foreach $T.listaPrelis.WSLISTAPREV as preventivo}
+          <tr class="listato_preventivi_row preventivo_stato_{$T.preventivo.WSPTIDSTATO}">
+            <td>
+            {#if $T.preventivo.WSPTIDSTATO === 'ADEG'}
+              <a style="margin-left:19px;" id="{$T.preventivo.WSPTNOMEPDF}" class="preventivo_download_anchor" href="#" target="_blank" onclick="ASD.gestionePreventivi.view.onRetrieveUserFile(this);return false;"><img src="/static/img/pdf.gif"/></a>
+            {#else}
+            <label style="margin-left:27px;">-</label>
+            {#/if}
+            </td>
+            <td>
+              <label>{$T.preventivo.WSPTIDPREV}</label>
+            </td>
+            <td>
+              <label>{$T.preventivo.WSPTDTPREV.replace(/\./g,'/')}</label>
+            </td>
+            <td>
+              <label>{$T.preventivo.WSPTDDPRODO}</label>
+            </td>
+            <td>
+              <label>{StringResources['decodifica.JSON.stato.'+$T.preventivo.WSPTIDSTATO]}</label>
+            </td>
+            <td>
+              <a class="delete_preventivo_anchor" href="#" onclick="ASD.gestionePreventivi.view.onRemovePreventivo({$T.preventivo.WSPTIDPREV});return false;" title="clicca per eliminare questo preventivo">
+                <img alt="delete" src="/static/img/cestino.png" />
+              </a>
+            </td>
+            <td>
+            {#if $T.preventivo.WSPTIDSTATO === 'ADEG'}
+                <a href="#" class="acquista_preventivo_anchor" id="{$T.utente.codmit}_{$T.preventivo.WSPTIDPREV}_{$T.preventivo.WSPTIDPREV}_{$T.preventivo.WSPTIDPRODO}" href="#">Acquista<img alt="" src="/static/img/creditCards.jpg" /></a>
+            {#else}
+            <label>-</label>
+            {#/if}
+            </td>
+          </tr>
+          {#/for}
+        </table>
+      </div>
+            ]]>
+    </script>
+</body>
+</html>

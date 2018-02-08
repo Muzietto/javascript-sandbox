@@ -1,0 +1,148 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery UI Max Length Reference</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "../common/demo.css";
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+</head>
+<body>
+<h1>jQuery UI Max Length Reference</h1>
+<p>A <a href="http://jqueryui.com">jQuery UI</a> plugin
+	that applies a maximum length to a textarea.</p>
+<p>This page provides a documentation reference for working
+	with the plugin <span class="version">v1.0.0</span>.
+	See a <a href="maxlengthui.html">demonstration</a> of the max length plugin
+	and download the code from there.
+	Or see a <a href="maxlengthuiBasics.html">minimal page</a> that you could
+	use as a basis for your own investigations.</p>
+<p style="text-align: center;"><span id="bookmark"></span></p>
+<div id="tabs">
+	<ul>
+		<li><a href="#options"><span>Settings</span></a></li>
+		<li><a href="#commands"><span>Commands</span></a></li>
+	</ul>
+	<div id="options" class="feature">
+		<h2><a name="settings">Instance Settings</a></h2>
+		<p>Customise each targetted input field
+			with the settings below (all are optional):</p>
+		<pre><code class="js">$(selector).maxlength({max: 400});</code></pre>
+		<p class="quickref">
+			<a href="#feedbackTarget">feedbackTarget</a>&nbsp;|
+			<a href="#feedbackText">feedbackText</a>&nbsp;|
+			<a href="#full">full</a>&nbsp;|
+			<a href="#max">max</a>&nbsp;|
+			<a href="#overflowText">overflowText</a>&nbsp;|
+			<a href="#showFeedback">showFeedback</a>&nbsp;|
+			<a href="#truncate">truncate</a>
+		</p>
+		<table border="0">
+		<tr><th>Name</th><th>Type</th><th>Default</th><th>Comments</th></tr>
+		<tr><td><a name="max"></a>max</td><td>number</td><td>200</td>
+			<td>The maximum number of characters allowed in the textarea.</td></tr>
+		<tr><td><a name="truncate"></a>truncate</td><td>boolean</td><td>true</td>
+			<td>Set to <code>true</code> to truncate any characters after the maximum allowed,
+				or <code>false</code> to only highlight the overflow. The textarea and the
+				feedback element are marked with classes to indicate their status:
+				<code>ui-state-highlight</code> when at or past the maximum number of characters
+				and <code>ui-state-error</code> when past that maximum.</td></tr>
+		<tr><td><a name="showFeedback"></a>showFeedback</td><td>boolean or string</td><td>true</td>
+			<td>Set to true to show a countdown of characters used/remaining.
+				Set to 'active' to only show the feedback when the textarea is hovered or focussed.
+				Otherwise no feedback is shown. See <a href="#truncate"><code>truncate</code></a>
+				for classes applied to the textarea and feedback element to indicate their status.</td></tr>
+		<tr><td><a name="feedbackTarget"></a>feedbackTarget</td>
+			<td>string or element or jQuery or function</td><td>null</td>
+			<td>Redirect the feedback to another element on the page - it only has effect if
+				<a href="#showFeedback"><code>showFeedback</code></a> is not <code>false</code>.
+				Provide either the jQuery selector, the DOM element itself, the element in
+				a jQuery wrapper, or a function that returns the element within a jQuery wrapper.
+				Within any callback function, the <code>this</code> value is the current textarea.</td></tr>
+		<tr><td><a name="feedbackText"></a>feedbackText</td><td>string</td>
+			<td>'{r} characters remaining ({m} maximum)'</td>
+			<td>The text to display for feedback to the user. Include
+				substitution points within the text: '{r}' for the number
+				of characters remaining, '{c}' for the number of characters
+				entered, and/or '{m}' for the maximum number of characters allowed.</td></tr>
+		<tr><td><a name="overflowText"></a>overflowText</td><td>string</td>
+			<td>'{o} characters too many ({m} maximum)'</td>
+			<td>The text to display for feedback to the user when there are more characters in the
+				field than the allowed maximum (see <a href="#truncate"><code>truncate</code></a>).
+				Include substitution points within the text: '{o}' for the number of
+				characters past the maximum, '{c}' for the number of characters
+				entered, and/or '{m}' for the maximum number of characters allowed.</td></tr>
+		<tr><td><a name="full"></a>full</td><td>function</td><td>null</td>
+			<td>This function is called when the textarea is full or overflowing.
+				It receives two parameters, being the triggering event (type 'maxlengthfull')
+				and an object with attribute <code>overflow</code> indicating that
+				the text is just full (false) or is overflowing (true). You can also <code>bind</code>
+				a handler to this event using its full name 'maxlengthfull'.<br>
+				<pre><code class="js">$(selector).maxlength({truncate: false,
+	full: function(event, ui) {
+		alert('This field is ' + (ui.overflow ? 'overflowing' : 'full'));
+	}
+});</code></pre></td></tr>
+		</table>
+	</div>
+	<div id="commands" class="feature">
+		<h2><a name="globals">Globals</a></h2>
+		<table border="0">
+		<tr><th>Name</th><th>Type</th><th>Comments</th></tr>
+		<tr><td><a name="g-options"></a>$.kbw.maxlength.options</td><td>object</td>
+			<td>The default <a href="#" onclick="jumpTo('options', 'settings');">settings</a> 
+				to use with all max length instances. Update with:<br>
+				<pre><code class="js">$.extend($.kbw.maxlength.options, {max: 300, truncate: false});</code></pre></td></tr>
+		</table>
+		<h2><a name="commands">Commands</a></h2>
+		<p class="quickref">
+			<a href="#destroy">destroy</a>&nbsp;|
+			<a href="#disable">disable</a>&nbsp;|
+			<a href="#enable">enable</a>&nbsp;|
+			<a href="#optionget">option (get)</a>&nbsp;|
+			<a href="#optionset">option (set)</a>&nbsp;|
+		</p>
+		<table border="0">
+		<tr><th>Signature</th><th>Returns</th><th>Comments</th></tr>
+		<tr><td><a name="optionset"></a>$(selector).maxlength('option', settings)</td><td>jQuery object</td>
+			<td>Update the <a href="#" onclick="jumpTo('options', 'settings');">settings</a>
+				for the max length instance(s) attached to the given textarea(s).<br><br>
+				<code>settings</code> (object) the collection of new settings.<br><br>
+				<pre><code class="js">$(selector).maxlength('option', {max: 300, truncate: false});</code></pre></td></tr>
+		<tr><td>$(selector).maxlength('option', name, value)</td><td>jQuery object</td>
+			<td>Update a particular <a href="#" onclick="jumpTo('options', 'settings');">setting</a>
+				for the max length instance(s) attached to the given textarea(s).<br><br>
+				<code>name</code> (string) the name of the setting to change;<br>
+				<code>value</code> (any) the new value of that setting.<br><br>
+				<pre><code class="js">$(selector).maxlength('option', 'max', 300);</code></pre></td></tr>
+		<tr><td><a name="optionget"></a>$(selector).maxlength('option', name)</td><td>object or any</td>
+			<td>Retrieve one or all of the current
+				<a href="#" onclick="jumpTo('options', 'settings');">settings</a>
+				for the first max length instance attached to the given textarea(s).<br><br>
+				<code>name</code> (string, optional) the name of the setting to retrieve;
+				omit for all settings.<br><br>
+				<pre><code class="js">var settings = $(selector).maxlength('option');
+var max = $(selector).maxlength('option', 'max');</code></pre></td></tr>
+		<tr><td><a name="enable"></a>$(selector).maxlength('enable')</td><td>jQuery object</td>
+			<td>Enable the max length functionality and textarea(s).</td></tr>
+		<tr><td><a name="disable"></a>$(selector).maxlength('disable')</td><td>jQuery object</td>
+			<td>Disable the max length functionality and textarea(s).</td></tr>
+		<tr><td><a name="destroy"></a>$(selector).maxlength('destroy')</td><td>jQuery object</td>
+			<td>Remove the max length functionality from the given textarea(s).</td></tr>
+		</table>
+	</div>
+</div>
+<p>Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

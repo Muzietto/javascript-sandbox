@@ -1,0 +1,15 @@
+/* default css settings for selectx plugin
+*/
+.selectx-selections-container{
+	width:360px;
+	min-height:20px;
+	border:1px solid red;
+	margin-top:20px;
+}
+
+.selectx-selected-option{
+	display:none;
+}
+
+.selectx-option-widget{border:1px solid yellow;margin:1px;}
+.selectx-option-widget-container{border:1px solid green;margin:1px;}

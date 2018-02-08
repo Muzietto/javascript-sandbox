@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>CPS JAVASCRIPT NEWS READER</title>
+    <!-- jQuery && YUI stuff BEGIN -->
+    <script type="text/javascript" src="../jQueryStuff/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="../jQueryStuff/jquery-jtemplates.js"></script>
+    <!--script type="text/javascript" src="../jQueryStuff/underscore-min.js"></script-->
+    <!-- jQuery stuff END -->
+    <!-- Code -->
+    <script type="text/javascript" src="cpsNews.js"></script>
+    <script type="text/javascript" src="cpsNewsView.js"></script>
+    <link rel="stylesheet" href="cpsNews.css" type="text/css" />
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //            $('#containerDiv1').setTemplate($('#cps_news_reader_widget_template').text());
+            //            $('#containerDiv1').processTemplate(RssFeed.instance('ZAMBLAlog'));
+            CPS_NEWS.newsReaderHtmlClient = CPS_NEWS.htmlClient();
+            CPS_NEWS.newsReaderCache = CPS_NEWS.cacheService();
+            var newsService = CPS_NEWS.newsService(CPS_NEWS.newsReaderCache, CPS_NEWS.newsReaderHtmlClient, CPS_NEWS.preferences);
+            var newsView = CPS_NEWS.viewWidget($('#containerDiv1'), $('#cps_news_reader_widget_template'));
+            var newsController = CPS_NEWS.newsViewController(newsView, newsService);
+            newsView.setController(newsController);
+            CPS_NEWS.newsReaderView = newsView;
+            newsController.initialize();
+            newsController.showNewsFeed();
+
+        });
+
+    </script>
+</head>
+<body style="background-color: #F5F5F5;">
+    <div style="width: 705px; margin: 0 auto; padding-top: 40px; background-color: white;">
+        <!--       <div id="sampleHtml">
+            <div class="news_reader_main">
+                <div class="post_list">
+                    <div class="single_post">
+                        <div class="post_left">
+                            <label class="100pc">
+                                This is the first post in the world</label>
+                            <input type="checkbox" name="postRead" />
+                        </div>
+                        <div class="post_right">
+                            <label>
+                                12/5/2001</label>
+                        </div>
+                        <br class="clear" />
+                    </div>
+                    <div class="single_post">
+                        <div class="post_left">
+                            <label class="100pc">
+                                This is the SECOND post in the world</label>
+                            <input type="checkbox" name="postRead" checked="checked" />
+                        </div>
+                        <div class="post_right">
+                            <label>
+                                12/7/2011</label>
+                        </div>
+                        <br class="clear" />
+                    </div>
+                </div>
+                <div class="news_reader_bottoniera">
+                    <div class="news_reader_warnings">
+                    asd sdf fg dfgaasfasfadfa 
+                    </div>
+                    <button id="refreshBtn" onclick="alert('refresh');return false;">
+                        REFRESH</button>
+                    <button id="Button2" onclick="alert('btn2');return false;">
+                        BTN2</button>
+                </div>
+            </div>
+        </div>-->
+        <div id="containerDiv1">
+        </div>
+        <div id="containerDiv2">
+            <div class="news_reader_switchboard">
+                <input type="checkbox" checked="checked" onchange="CPS_NEWS.newsReaderView.onChangeHtmlClientStatus($(this));return false;"></input><label>HTML
+                    Client Status</label>
+            </div>
+            <div class="news_reader_switchboard">
+                <input type="checkbox" onchange="CPS_NEWS.newsReaderView.onChangeCacheContent($(this));return false;"></input><label>Cache</label>
+            </div>
+            <div class="news_reader_switchboard">
+                <input type="checkbox" checked="checked" onchange="CPS_NEWS.newsReaderView.onChangePreferences($(this));return false;"></input><label>Download
+                    Allowed</label>
+            </div>
+            <div class="news_reader_switchboard">
+                <button id="refreshBtn" onclick="CPS_NEWS.newsReaderView.onRestart();return false;">
+                    RESTART</button>
+            </div>
+        </div>
+        <br class="clear" />
+    </div>
+    <script type="text/html" id="cps_news_reader_widget_template">
+            <div class="news_reader_main" id="{$T.guid}>
+                <div class="post_list">
+                        {#param name=i value=0}
+                        {#foreach $T.postList as singlePost}
+                            <div class="single_post">
+                                <div class="post_left">
+                                    <label class="100pc">{$T.singlePost.caption}</label>
+                                    <input type="checkbox" id="{$T.singlePost.postId}_cb" {#if $T.singlePost.postRead===true} checked="checked"{#/if} name="postRead_{$T.singlePost.postId}" onclick="CPS_NEWS.newsReaderView.onReadUnreadPost(this);"/>
+                                </div>
+                                <div class="post_right">
+                                    <label>{$T.singlePost.publicationDate}</label>
+                                </div>
+                                <br class="clear" />
+                            </div>
+                        {#param name=i value=$P.i+1}
+                        {#/for} 
+                </div>
+                <div class="news_reader_bottoniera">
+                    <div class="news_reader_warnings">
+                    
+                    </div>
+                    <button id="refreshBtn" onclick="CPS_NEWS.newsReaderView.onRefresh();return false;">
+                        REFRESH</button>
+                </div>
+            </div>
+    </script>
+</body>
+</html>

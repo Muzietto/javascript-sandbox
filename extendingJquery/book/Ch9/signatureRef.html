@@ -1,0 +1,190 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery UI Signature Reference</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "../common/demo.css";
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+</head>
+<body>
+<h1>jQuery UI Signature Reference</h1>
+<p>A <a href="http://jqueryui.com">jQuery UI</a> plugin
+	that captures or draws a signature.
+	It requires the jQuery UI widget and mouse modules and needs the
+	<a href="http://excanvas.sourceforge.net/"><code>excanvas.js</code></a> add-in for older IE versions.</p>
+<p>This page provides a documentation reference for working
+	with the plugin <span class="version">v1.1.0</span>.
+	See a <a href="signature.html">demonstration</a> of the signature plugin
+	and download the code from there.
+	Or see a <a href="signatureBasics.html">minimal page</a> that you could
+	use as a basis for your own investigations.</p>
+<p style="text-align: center;"><span id="bookmark"></span></p>
+<div id="tabs">
+	<ul>
+		<li><a href="#options"><span>Settings</span></a></li>
+		<li><a href="#commands"><span>Commands</span></a></li>
+	</ul>
+	<div id="options" class="feature">
+		<h2><a name="settings">Instance Settings</a></h2>
+		<p>Customise each targetted input field
+			with the settings below (all are optional):</p>
+		<pre><code class="js">$(selector).signature({guideline: true});</code></pre>
+		<p class="quickref">
+			<a href="#background">background</a>&nbsp;|
+			<a href="#change">change</a>&nbsp;|
+			<a href="#color">color</a>&nbsp;|
+			<a href="#disabled">disabled</a>&nbsp;|
+			<a href="#guideline">guideline</a>&nbsp;|
+			<a href="#guidelineColor">guidelineColor</a>&nbsp;|
+			<a href="#guidelineIndent">guidelineIndent</a>&nbsp;|
+			<a href="#guidelineOffset">guidelineOffset</a>&nbsp;|
+			<a href="#notAvailable">notAvailable</a>&nbsp;|
+			<a href="#syncField">syncField</a>&nbsp;|
+			<a href="#thickness">thickness</a>
+		</p>
+		<table border="0">
+		<tr><th>Name</th><th>Type</th><th>Default</th><th>Comments</th></tr>
+		<tr><td><a name="background"></a>background</td><td>string</td><td>'#ffffff'</td>
+			<td>The background colour of the signature area. Specify this as
+				a six character hexadecimal value prefixed by a hash (#),
+				as a RGB triplet, or as a named colour.<br>
+				<pre><code class="js">$(selector).signature({background: '#0000ff'});
+$(selector).signature({background: 'rgb(0,0,255)'});
+$(selector).signature({background: 'blue'});</code></pre></td></tr>
+		<tr><td><a name="color"></a>color</td><td>string</td><td>'#000000'</td>
+			<td>The colour of the signature lines. Specify this as
+				a six character hexadecimal value prefixed by a hash (#),
+				as a RGB triplet, or as a named colour.<br>
+				<pre><code class="js">$(selector).signature({color: '#0000ff'});
+$(selector).signature({color: 'rgb(0,0,255)'});
+$(selector).signature({color: 'blue'});</code></pre></td></tr>
+		<tr><td><a name="thickness"></a>thickness</td><td>number</td><td>2</td>
+			<td>The thickness of the lines used to draw the signature.</td></tr>
+		<tr><td><a name="guideline"></a>guideline</td><td>boolean</td><td>false</td>
+			<td>Set to <code>true</code> to draw a horizontal guideline
+				within the signature area.</td></tr>
+		<tr><td><a name="guidelineColor"></a>guidelineColor</td><td>string</td><td>'#a0a0a0'</td>
+			<td>The colour of the guideline (if present). Specify this as
+				a six character hexadecimal value prefixed by a hash (#),
+				as a RGB triplet, or as a named colour.</td></tr>
+		<tr><td><a name="guidelineOffset"></a>guidelineOffset</td><td>number</td><td>50</td>
+			<td>The offset (pixels) of the guideline (if present) from the bottom
+				of the signature area.</td></tr>
+		<tr><td><a name="guidelineIndent"></a>guidelineIndent</td><td>number</td><td>10</td>
+			<td>The indent (pixels) of the guideline (if present) from the sides
+				of the signature area.</td></tr>
+		<tr><td><a name="notAvailable"></a>notAvailable</td><td>string</td>
+			<td>'Your browser doesn\'t support signing'</td>
+			<td>The text to display in the signature area if the browser doesn't
+				support the <code>canvas</code> element.</td></tr>
+		<tr><td><a name="disabled"></a>disabled</td><td>boolean</td><td>false</td>
+			<td>Set to <code>true</code> to disable the signature capture functionality.
+				You can also use the
+				<a href="#" onclick="jumpTo('commands', 'disable');"><code>disable</code></a>
+				and <a href="#" onclick="jumpTo('commands', 'enable');"><code>enable</code></a>
+				commands for this.</td></tr>
+		<tr><td><a name="syncField"></a>syncField</td><td>string or element or jQuery</td><td>null</td>
+			<td>The element to keep synchronised with the JSON text for the signature.
+				The value may be a string selector, a DOM element, or a jQuery object.<br>
+				<pre><code class="js">$(selector).signature({syncField: '#jsonSignature'});</code></pre></td></tr>
+		<tr><td><a name="change"></a>change</td><td>function</td><td>null</td>
+			<td>This function is called when the signature is changed: either by
+				drawing a new line on it with the mouse, by clearing it, or by
+				re-drawing an entire signature. The function receives two parameters:
+				the triggering event and an empty UI object. You can also <code>bind</code>
+				a handler to this event using its full name 'signaturechange'.<br>
+				<pre><code class="js">$(selector).signature({
+	change: function(event, ui) {
+		alert('The signature has changed');
+	}
+});
+$(selector).signature().
+	bind('signaturechange', function(event, ui) {
+		alert('The signature has changed');
+	});</code></pre></td></tr>
+		</table>
+	</div>
+	<div id="commands" class="feature">
+		<h2><a name="globals">Globals</a></h2>
+		<table border="0">
+		<tr><th>Name</th><th>Type</th><th>Comments</th></tr>
+		<tr><td><a name="g-options"></a>$.kbw.signature.options</td><td>object</td>
+			<td>The default <a href="#" onclick="jumpTo('options', 'settings');">settings</a> 
+				to use with all signature instances. Update with:<br>
+				<pre><code class="js">$.extend($.kbw.signature.options, {guideline: true});</code></pre></td></tr>
+		</table>
+		<h2><a name="commands">Commands</a></h2>
+		<p class="quickref">
+			<a href="#clear">clear</a>&nbsp;|
+			<a href="#destroy">destroy</a>&nbsp;|
+			<a href="#disable">disable</a>&nbsp;|
+			<a href="#draw">draw</a>&nbsp;|
+			<a href="#enable">enable</a>&nbsp;|
+			<a href="#isEmpty">isEmpty</a>&nbsp;|
+			<a href="#optionget">option (get)</a>&nbsp;|
+			<a href="#optionset">option (set)</a>&nbsp;|
+			<a href="#toJSON">toJSON</a>
+		</p>
+		<table border="0">
+		<tr><th>Signature</th><th>Returns</th><th>Comments</th></tr>
+		<tr><td><a name="optionset"></a>$(selector).signature('option', settings)</td><td>jQuery object</td>
+			<td>Update the <a href="#" onclick="jumpTo('options', 'settings');">settings</a>
+				for the signature instance(s) attached to the given div(s).<br><br>
+				<code>settings</code> (object) the collection of new settings.<br><br>
+				<pre><code class="js">$(selector).signature('option',
+	{background: '#ffffcc', color: '#ff0000'});</code></pre></td></tr>
+		<tr><td>$(selector).signature('option', name, value)</td><td>jQuery object</td>
+			<td>Update a particular <a href="#" onclick="jumpTo('options', 'settings');">setting</a>
+				for the signature instance(s) attached to the given div(s).<br><br>
+				<code>name</code> (string) the name of the setting to change;<br>
+				<code>value</code> (any) the new value of that setting.<br><br>
+				<pre><code class="js">$(selector).signature('option', 'background', '#ffffcc');</code></pre></td></tr>
+		<tr><td><a name="optionget"></a>$(selector).signature('option', name)</td><td>object or any</td>
+			<td>Retrieve one or all of the current
+				<a href="#" onclick="jumpTo('options', 'settings');">settings</a>
+				for the first signature instance attached to the given div(s).<br><br>
+				<code>name</code> (string, optional) the name of the setting to retrieve;
+				omit for all settings.<br><br>
+				<pre><code class="js">var settings = $(selector).signature('option');
+var max = $(selector).signature('option', 'background');</code></pre></td></tr>
+		<tr><td><a name="enable"></a>$(selector).signature('enable')</td><td>jQuery object</td>
+			<td>Enable the signature capture functionality.</td></tr>
+		<tr><td><a name="disable"></a>$(selector).signature('disable')</td><td>jQuery object</td>
+			<td>Disable the signature capture functionality.</td></tr>
+		<tr><td><a name="destroy"></a>$(selector).signature('destroy')</td><td>jQuery object</td>
+			<td>Remove the signature functionality from the given div(s).</td></tr>
+		<tr><td><a name="clear"></a>$(selector).signature('clear')</td><td>jQuery object</td>
+			<td>Erase any current signature within the div(s). This triggers the
+				<a href="#" onclick="jumpTo('options', 'change');"><code>change</code></a> event.</td></tr>
+		<tr><td><a name="isEmpty"></a>$(selector).signature('isEmpty')</td><td>boolean</td>
+			<td>Determine whether the first signature area has any signature drawn within it.</td></tr>
+		<tr><td><a name="toJSON"></a>$(selector).signature('toJSON')</td><td>string</td>
+			<td>Convert the first signature to a JSON string for transferral/storage.
+				A sample follows for a signature with two lines:<br>
+				<pre><code class="js">{"lines":[[[100,100],[150,200]],
+	[[40,50],[45,55],[30,80]]]}</code></pre></td></tr>
+		<tr><td><a name="draw"></a>$(selector).signature('draw', json)</td><td>jQuery object</td>
+			<td>Re-draw the signature from the supplied JSON. This triggers the
+				<a href="#" onclick="jumpTo('options', 'change');"><code>change</code></a> event.<br><br>
+				<code>json</code> (string or object) the JSON object or its string representation,
+				as is obtained from the <a href="#toJSON"><code>toJSON</code></a> command.<br><br>
+				<pre><code class="js">$(selector).signature('draw', json);</code></pre>
+				<span class="version">Since 1.1.0</span> - <code>json</code> may be a string.</td></tr>
+		</table>
+	</div>
+</div>
+<p>Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

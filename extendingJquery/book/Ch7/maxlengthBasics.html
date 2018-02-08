@@ -1,0 +1,37 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type"
+    content="text/html;charset=utf-8">
+      <title>jQuery Max Length Basics</title>
+      <style type="text/css">@import
+      "jquery.maxlength.css";</style>
+      <script type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+      </script>
+      <script type="text/javascript" src="jquery.maxlength.js">
+      </script>
+      <script type="text/javascript">$(function() { var onFull =
+      function(){alert('birillo');}
+      $('#maxLength').maxlength({max:20,truncate:false,showFeedback:'active',feedbackTarget:'#birillo'});
+      });</script>
+      <body>
+        <h1>jQuery Max Length Basics</h1>
+        <p>This page demonstrates the very basics of the 
+        <a href="maxlength.html">jQuery Max Length plugin</a>. It
+        contains the minimum requirements for using the plugin and
+        can be used as the basis for your own experimentation.</p>
+        <p>For more detail see the 
+        <a href="maxlengthRef.html">documentation
+        reference</a>page.</p>
+        <p>
+          <span class="demoLabel">Default max length:</span>
+          <textarea id="maxLength" rows="5" cols="50"></textarea>
+        </p>
+        <div id="birillo"
+        style="width:100px;height:20px;border:1px solid red;margin-top:20px;" />
+      </body>
+    </meta>
+  </head>
+</html>

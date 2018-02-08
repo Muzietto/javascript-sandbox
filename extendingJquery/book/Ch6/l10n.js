@@ -1,0 +1,1 @@
+(counts[''] ? counts['']++ : counts[''] = 1);

@@ -1,0 +1,187 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery Right-click Event</title>
+<style type="text/css">
+@import "../common/jquery.tabs.css";
+@import "../common/demo.css";
+
+.rightClickTarget { width: 12em; margin-left: 15em; padding: 1em 3em; border: 1px solid #3c8243; text-align: center; }
+.right-clickable { background-color: #ddffe8; cursor: url(rightclick.png), pointer; }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../common/jquery.tabs.js"></script>
+<script type="text/javascript" src="jquery.rightclick.js"></script>
+<script type="text/javascript" src="jquery.rightclick2.js"></script>
+<script type="text/javascript" src="../common/jquery.chili-2.2.js"></script>
+<script type="text/javascript" src="../common/demo.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#download').click(function() {
+		window.location = 'jquery.rightclick.package-1.0.0.zip';
+	});
+	$('button').removeClass('right-clickable');
+});
+</script>
+</head>
+<body>
+<h1>jQuery Right-click Event</h1>
+<p>A <a href="http://jquery.com">jQuery</a> plugin
+	that allows you to bind to a right click or multiple-click event.</p>
+<p>The current version is <span class="version">1.0.0</span> and is available 
+	under the <a href="https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt">MIT</a> licence.
+	For more detail see the <a href="rightclickRef.html">documentation reference</a> page.</p>
+<p style="text-align: center;">
+	<button type="button" id="download">Download now</button>
+	<span id="bookmark"></span>
+</p>
+<div id="tabs">
+	<ul>
+		<li><a href="#basics"><span>Basics</span></a></li>
+		<li><a href="#multi"><span>Multi-click</span></a></li>
+		<li><a href="#which"><span>Click/Which</span></a></li>
+		<li><a href="#wild"><span>In the Wild</span></a></li>
+		<li><a href="#quick"><span>Quick Ref</span></a></li>
+	</ul>
+	<div id="basics" class="feature">
+		<h2>Basics</h2>
+		<p>You can add a special click event handler that only responds to
+			clicks by the right mouse button.</p>
+		<p>You can prevent the default action (displaying the context menu) by
+			returning <code>false</code> from the callback function.</p>
+		<p><span class="demoLabel">Right-click:</span>
+			<label><input type="checkbox" id="defaultAction"> Allow default action</label></p>
+		<p><span class="demoLabel">&nbsp;</span>
+			<button type="button" id="triggerRightClick">Trigger</button>
+			<button type="button" id="unbindRightClick">Unbind</button></p>
+		<div id="defaultRightClick" class="rightClickTarget">Right click here</div>
+		<pre><code class="jsdemo">onRightClick();
+
+$('#triggerRightClick').click(function() {
+	$('#defaultRightClick').trigger('rightclick');
+});
+
+$('#unbindRightClick').toggle(function() {
+	$(this).text('Bind');
+	$('#defaultRightClick').off('rightclick');
+}, function() {
+	$(this).text('Unbind');
+	onRightClick();
+});
+
+function onRightClick() {
+	$('#defaultRightClick').on('rightclick', function(event) {
+		alert('Notified of event ' + event.type);
+		return $('#defaultAction').is(':checked');
+	});
+}</code></pre>
+	</div>
+	<div id="multi" class="feature">
+		<h2>Multiple-click</h2>
+		<p>You can also add a special click event handler that only responds to
+			multiple clicks by the right mouse button. Set the maximum time between
+			all clicks with the <code>clickSpeed</code> option and the number of
+			clicks required with the <code>clickCount</code> option.</p>
+		<p>You can disable the right-click functionality on individual elements
+			by adding them into <code>$.event.rightclickDisabled</code> (a jQuery object)
+			and enable them again by removing them from this set.</p>
+		<p><span class="demoLabel">Right-multi-click:</span>
+			Speed (ms): <select id="multiRightSpeed">
+					<option value="250">250</option>
+					<option value="500" selected>500</option>
+					<option value="1000">1000</option>
+					<option value="2000">2000</option>
+				</select></p>
+			<div id="multiRightClick" class="rightClickTarget">Right click here 2 or 3 times</div>
+		<p><span class="demoLabel">&nbsp;</span>
+			<input type="checkbox" id="multiEnabled" checked> <label for="multiEnabled">Enabled</label></p>
+		<p><span class="demoLabel">Outcome:</span>
+			<textarea id="multiOutcome" rows="6" cols="50"></textarea></p>
+		<pre><code class="jsdemo">$('#multiRightSpeed').change(function() {
+	$('#multiOutcome').val('');
+	var speed = parseInt($(this).val());
+	$('#multiRightClick').unbind('rightmulticlick').
+		bind('rightmulticlick', {clickSpeed: speed}, function(event) {
+			$('#multiOutcome').val($('#multiOutcome').val() + 'Right-double-clicked\n');
+			return false;
+		}).
+		bind('rightmulticlick', {clickSpeed: speed, clickCount: 3}, function(event) {
+			$('#multiOutcome').val($('#multiOutcome').val() + 'Right-triple-clicked\n');
+			return false;
+		});
+}).change();
+
+$('#multiEnabled').change(function() {
+	if ($.event.rightclickDisabled.is('#multiRightClick')) {
+		$.event.rightclickDisabled = $.event.rightclickDisabled.filter(':not(#multiRightClick)');
+	}
+	else {
+		$.event.rightclickDisabled = $.event.rightclickDisabled.add('#multiRightClick');
+	}
+});</code></pre>
+	</div>
+	<div id="which" class="feature">
+		<h2>Click/Which</h2>
+		<p>An alternative implementation extends the <code>click</code> event to intercept
+			right-clicks and to set the <code>event.which</code> attribute accordingly (3).</p>
+		<p><span class="demoLabel">Which click:</span></p>
+			<div id="whichClick" class="rightClickTarget">Any click here</div>
+		<pre><code class="jsdemo">$('#whichClick').on('click', function(event) {
+	alert('Clicked button ' + event.which);
+	return false;
+});</code></pre>
+	</div>
+	<div id="wild" class="feature">
+		<h2>In the Wild</h2>
+		<p>This tab highlights examples of this plugin in use "in the wild".</p>
+		<div id="wildLinks">
+			<div>
+				<h3><!--a href=""></a--></h3>
+				<p>None as yet.</p>
+			</div>
+		</div>
+		<p style="clear: both;">To add another example, please contact me (kbwood{at}iinet.com.au)
+			and provide the plugin name, the URL of your site, its title,
+			and a short description of its purpose and where/how the plugin is used.</p>
+	</div>
+	<div id="quick" class="feature">
+		<h2>Quick Reference</h2>
+		<p>Below are examples of how the plugin can be used. For more detail see the
+			<a href="rightclickRef.html">documentation reference</a> page.</p>
+		<pre><code class="js">$(selector).bind('rightclick', function(event) { ... });
+$(selector).unbind('rightclick');</code></pre>
+	</div>
+</div>
+<h2>Usage</h2>
+<ol>
+<li>Include the jQuery library in the head section of your page.
+	<pre><code class="html">&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre></li>
+<li>Download and include the jQuery Right-click JavaScript in the head section of your page.
+	<pre><code class="html">&lt;script type="text/javascript" src="jquery.rightclick.js"&gt;&lt;/script&gt;</code></pre>
+    Alternately, you can use the minified version
+	<code>jquery.rightclick.min.js</code> (2.1K vs 4.2K, 0.8K when zipped).</li>
+<li>Bind the event to your elements.
+	<pre><code class="js">$(selector).bind('rightclick', function() { ... });</code></pre></li>
+</ol>
+<p> For more detail see the
+	<a href="rightclickRef.html">documentation reference</a> page.</p>
+<h2>Comments</h2>
+<!--blockquote><p>....</p></blockquote>
+<div><cite>...</cite></div-->
+<p style="clear: both;">Contact Keith Wood at kbwood{at}iinet.com.au 
+	with comments or suggestions.</p>
+<h2><a name="changes">Change History</a></h2>
+<table border="0" id="history" width="100%">
+<tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+<tr><td>1.0.0</td><td>01&nbsp;Jan&nbsp;2013</td><td><ul>
+	<li>Initial release</li>
+</ul></td></tr>
+</table>
+<hr>
+<p>
+	<a id="valid" href="http://validator.w3.org/check">
+		<img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict"></a>
+</p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+/* CSS per esecuzione HDB */
+body{font-family:Verdana;}
+label{display:block;}
+button{margin:3px;width:120px;font-size:16px;}
+.100pc{width:100%;}
+.left{float:left;}
+.right{float:right;}
+.clear{clear:both;}
+.borderGreen{border:1px solid green;}
+.borderRed{border:1px solid red;}
+
+.news_reader_main{width:100%;height:310px;}
+.post_list{margin:20px;height:220px;overflow:scroll;border:1px solid green;}
+.single_post{width:96%;height:40px;background-color:Aqua;padding:5px 10px;margin-bottom:3px;border-bottom:1px solid Blue;}
+.disabled{background-color:Gray;}
+.post_left{width:70%;float:left;border-right:1px solid red;}
+.post_right{width:26%;float:right;}
+.news_reader_warnings{padding-left:7px;width:96%;height:25px;background-color:Yellow;margin:3px 13px;}
+.news_reader_bottoniera button{margin-left:20px;}
+
+.news_reader_switchboard{float:left;width:167px;}

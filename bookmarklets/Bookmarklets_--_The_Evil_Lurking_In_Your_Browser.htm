@@ -1,0 +1,566 @@
+    
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta NAME='robots' CONTENT='index,follow'>
+    <meta NAME='description' CONTENT="Bookmarklets are one of the biggest security holes lurking in your browser.  They are also the biggest thing waiting to hit the web since Ajax.">
+    <meta NAME='keywords' CONTENT='json, javascript, bookmarklets, security'>
+
+    <title>Bookmarklets -- The Evil Lurking In Your Browser</title>
+ 
+
+    <!-- Set up a script tag for php to pass variables in -->
+    <script type="text/javascript">
+var _articleAge=962.118703704
+var _showAds=15
+    
+    </script>
+
+
+    <!-- Load StyleSheets -->
+    <link rel="stylesheet" type="text/css" href="http://www.hunlock.com/templates/common_v1.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="http://www.hunlock.com/templates/print_v1.css" media="print">
+
+    <!-- Load common javascript -->
+    <script type="text/javascript" src="http://www.hunlock.com/common.js"></script>
+    
+    <!-- Let IE understand <q> tags -->
+    <!--[if lte IE 7]>
+      <style type="text/css">
+        q        { behavior: url(http://www.hunlock.com/IEquotes.htc); }
+      </style>
+    <![endif]-->
+    
+    <!-- Link to our RSS feed -->
+    <LINK rel="alternate" TYPE="application/rss+xml" TITLE="RSS" HREF="http://www.hunlock.com/feed.php">
+
+    <!-- Local CSS file, just in case -->
+    <style type="text/css">
+       .adBar {}
+    </style>
+  </head>
+
+  <body class=body>
+
+  <div id='header' class='header noprint'>
+     <a HREF="http://www.hunlock.com/"><div class=button>BLOG</div></a>
+     <a HREF="http://www.hunlock.com/launch.php"><div class=button>LAUNCH</div></a>
+     <a HREF="http://www.hunlock.com/archives.php"><div class=button>ARCHIVES</div></a>
+
+     <div id='clock' class='clock'>&nbsp;</div>
+  </div>  
+  <table width="100%" cellspacing=0 cellpadding=0 style="table-layout: fixed; min-width: 1000px">
+    <tr><td class=artWidth></td><td></td></tr>
+<tr><td valign=top>
+
+<div class=article><h1>Bookmarklets -- The Evil Lurking In Your Browser</h1>
+<div class=infoBar>Filed: Sun, Feb 11 2007 under Programming|| Tags: json javascript bookmarklets security</div><P>Bookmarklets are incredibly useful tools.  They can put your favorite sites
+at your fingertips as easy as dragging the icon in the location bar to your bookmark bar --
+you can also drag RSS feeds, and you can drag scripts.  While mostly benign, 
+often very useful, and definitely under-exploited, bookmarklets are one of the 
+biggest security holes lurking in your browser in addition to being the biggest thing
+waiting to hit the web since Ajax.
+<P>This tutorial will go over the uses and mis-uses of the bookmarklets.  If you're
+a developer, you will --hopefully-- come away with a few new ideas for your site.
+If you're a casual user, you will --again, hopefully-- learn how much, profound,
+ trust you are placing in a site when you use their bookmarklets.
+<h4>Getting Started</h4>
+<P>To get started so you can follow along with this article, Firefox users need to right-click on their toolbar by the menu
+and check the <q>Bookmarks Toolbar</q> line.  Internet Explorer users need to right-click on
+their browser's toolbar and make sure the <q>links</q> button is checked. These bookmark
+bars are just an area of your bookmarks which are always visible on the browser
+toolbar.  
+<div style='margin-left: 100px; padding: 10px; border: 2px solid black'>When you are done with this article just right click on any
+            of the example bookmarklets you added and click on "delete".   You
+            can also right click an empty area of the toolbar and uncheck
+            the <q>bookmark toolbar</q> in Firefox and <q>Links</q> in Internet
+            Explorer to get rid of the bookmark bar.</div>
+<P>To use these toolbars you can just drag the current <abbr title="Universal Resource Locator: http://somedomain.com">URL</abbr> from your browser's
+location line to the bookmark bar.  If you do it now then you will have an
+ever-visible button offering to bring you back to this article.  That's not
+very exciting and useful, but if you subscribe to a <abbr title="Really Simple Syndication">RSS</abbr> feed and tell it to save
+to the bookmark bar (or links in IE) it will act like a drop-down menu showing you 
+the latest feeds which is, pretty nifty.
+<h4>Totally Cool Bookmarklets</h4>
+<P>Where things get useful, and scary is that you can drag a javascript link to
+your browser location bar.  
+<P>To see what's going on, add the following link to your bookmark bar.  Firefox
+users can simply drag the link up to their bookmark toolbar.  IE7 users need to
+right click on the link and select add to favorites then save it in their "links"
+folder. (IE7 will pop up a warning, and it's right to do so, but the next two links
+are safe and benign so go ahead and add them, and delete them when you're done with
+this article).   
+<P>Once the bookmarklet has been saved, simply click on it to make ANY
+page on the internet editable.  (Click anywhere on the document and start typing
+or click and image and resize it, click and drag to move items and pictures.).
+<P><A HREF="javascript:document.body.contentEditable='true'; document.designMode='on'; void 0">Edit Any Page.</A>  (Hit reload to get rid of the effect)
+<P>Head on over to <A HREF="http://www.freerepublic.com/focus/news/browse?ao=1" class="out">The Free Republic</A> or
+<A HREF="http://www.democraticunderground.com/" class="out">The Democratic Underground</A> or even <A HREF="http://www.drudgereport.com/" class="out">The Drudge Report</A>
+and edit them up to match your politics.   Don't feel too empowered however, you're
+the only one who will see the changes you're making.
+<P>When you're done playing just hit reload to get back to the page proper, or the back-button to return to this article.
+<P>Great fun is waiting to be had!  Here's a bookmarklet which will scoop up
+all the images on the page and have them start spiraling around.  
+<P><A HREF="javascript:window.scrollTo(0, 0); R=0; x1=.1; y1=.05; x2=.25; y2=.24; x3=1.6; y3=.24; x4=300; y4=200; x5=300; y5=200; DI=document.getElementsByTagName('img'); DIL=DI.length; function A(){for(i=0; i-DIL; i++){DIS=DI[ i ].style; DIS.position='absolute'; DIS.left=(Math.sin(R*x1+i*x2+x3)*x4+x5)+'px'; DIS.top=(Math.cos(R*y1+i*y2+y3)*y4+y5)+'px'}R++}setInterval('A()',5); void(0);">Crazy Images</A>  (Hit reload to get rid of the effect)
+<P>I'm not very big
+on images, although this will play with the social bookmarking icons on this site.  If you want to
+hit the big-time head over to <A HREF="http://www.flickr.com/explore/interesting/7days/" class="out">Flickr</A>
+and click the bookmarklet there.
+<P>These sort of cool effect scripts pop on Digg from time to time, if you see them
+and like them it's easy enough to add them to your bookmark bar.  Just bookmark the
+current page, and copy the
+cool javascript code, but instead of pasting into your browser, edit the new bookmark properties (right click)
+and paste the javascript in as the url and then rename the title  to something
+more descriptive.
+<h4>Feel the power!</h4>
+<p> As a point of fact, Bookmarklets have not been exploited much to their full 
+potential. Some of the social bookmarking sites use them to make submitting a
+site easier but even these are self-contained Javascript snippets, just slightly more useful
+versions of the slight of hand examples given above.  
+<P>The examples above are self-contained javascript programs but it's possible
+for a bookmarklet to do nothing but attach a full-blown external javascript
+application. The social bookmarking site Ma.gnolia is one of the few sites pushing the 
+boundaries of the bookmarklets.  When you click their bookmarklet a full-blown
+javascript application is attached.  Specifically Ma.gnolia.com's bookmarklet does this:
+<pre class=code onClick="selectNode(this)">
+javascript:(
+   function() { 
+      var s=document.createElement("script");
+          s.charset="UTF-8";
+          s.src="http://ma.gnolia.com/meta/magframe";
+      document.body.appendChild(s)
+   })();
+</pre>
+<P>In plain English, when this bookmark is clicked, a new javascript element
+is created, it's given a utf-8 character-set, and the source code is set to <q>http://ma.gnolia.com/meta/magframe</q>
+This script is then appended to the document body where the external javascript
+application is automatically loaded.
+<P>In this case it's ma.gnolia.com's social bookmarking and review service.  Which
+lets you visit any site on the net and if you like it you can click the bookmarklet,
+add it to your bookmarks, comment on it and review it.   This is almost, but not quite
+a traveling message baord where you and a few thousand of your closest friends can
+comment on the sites you visit.
+<P>Here's the actual bookmarklet so you can see a little of what it does.  (You'll see
+more if you're actually a ma.gnolia.com member and can log in.).  When you're done
+just hit the <q>X</q> in the upper-right-hand corner to return to this article.
+You can either drag this to your bookmark bar or just click the link to activate it.
+<P><A HREF="javascript:(function(){var%20s=document.createElement(%22script%22);s.charset=%22UTF-8%22;s.src=%22http://ma.gnolia.com/meta/magframe%22;document.body.appendChild(s)})();">Ma.gnolia's Roots</A> 
+<P>If you'd like some more information on what exactly this snippet is doing, use you can
+check out my article <A HREF="http://www.hunlock.com/blogs/Howto_Dynamically_Insert_Javascript_And_CSS">Howto Dynamically Insert Javascript and CSS</A>.
+<h4>Feel the power of the dark side!</h4>
+<P>Now anyone with a breath of sanity will realize what just happened.  
+Quite simply what ma.gnolia.com is doing is what's known as a script injection.
+It's not malicious of course, but the moment you click a scripted bookmarklet you
+give the originator of that bookmark total, perfect control over the site you
+are currently visiting. 
+<P>I'm going to tell you a horror story now.  It hasn't happened yet, but
+the terrifying thing is that it can happen, and most likely will happen.
+Somewhere, on the net, the cyber-mafia is creating a site, a site you will visit and
+like and it will ask you to use their bookmarklet and to click on it on sites you
+like.  And you do.
+<P>And every time you click their bookmarklet, that bookmarklet downloads their javascript 
+application which does a lot of nifty things, but one of the things it also
+does is check your page for credit card info, social security numbers, stock
+broker accounts, and other very personal stuff.  And it can do this because when
+you click on that nifty bookmarklet you give them permission to do anything
+to the current page they want.
+<P>To give you an idea of just what a bookmarklet can do on a third party
+website here is a bookmarklet which will pop up a window on any page you visit,
+that window will display the cookies that site has set and it will display the
+elements of that page (pretty much a butt ugly version of view source).  
+<p><A HREF='javascript:(function(){var s=document.createElement("script"); s.src="http://www.hunlock.com/examples/snooper.js"; document.body.appendChild(s);})();'>Snoop Test</A>
+<P>Now this bookmarklet is only displaying what it has access to, it's not sending
+data back to me (I'm on a budget hosting account, I have to watch my bandwidth after all).
+But this shows you just what a bookmarklet has access to (everything).
+<P>You can view the server-side source code for this bookmarklet at 
+<A HREF="http://www.hunlock.com/examples/snooper.js">http://www.hunlock.com/examples/snooper.js</A>.  A version
+for Internet Explorer can be seen at <A HREF="http://www.hunlock.com/examples/snooper.txt">http://www.hunlock.com/examples/snooper.txt</a>
+since Internet Explorer tries to download .js files and run them as applications.
+<P>Quite simply you should never add a bookmarklet from any site you don't
+trust 100% and even then you should never <b>click</b> and activate a bookmarklet
+on any page which contains sensitive, personal information because if a bookmarklet
+can scoop up all the images on any page on the net and send them flying around, it
+can for sure take any form information and SEND them to any spot on the net and
+you'll never even know it happened.
+<h4>How to make a simple bookmarklet</H4>
+<P>Now that I have just terrified everyone into never, ever
+using a bookmarklet, here's how to make one for your site, because they are
+useful and cool and you can do a lot of neat things with them if you can
+convince your users to trust you.
+<P>Scripted bookmarkletes rely on using depreciated javascript: urls.   It's
+considered very bad form to use javascript in the HREF attribute of anchor tags
+but it's how and why bookmarklets work.  Basically a bookmarklet can be as
+simple as this...
+<pre class=code onclick='selectNode(this)'>
+
+&lt;a href="javascript:alert('Hello World')"&gt;My first Bookmarklete&lt;/a&gt;
+
+</pre>
+<P>Which will produce this&hellip;
+<P><a href="javascript:alert('Hello World')">My first Bookmarklete</A>
+<P>If you want to simply pass page information to a submit page (like many of the social bookmark
+sites do) then you're going to do a simple document.location.href redirect and encode
+some very basic information about the site you are on.  For instance...
+<pre class=code onclick='selectNode(this)'>
+
+javascript:document.location.href='http://somedomain.com/submit.php?title='+encodeURIComponent(document.title)
+
+</pre>
+<P>This would redirect the current page to http://somedomain.com/submit.php and pass it the
+page title of the page where the bookmarklet was clicked on.   You can of course add
+other information like the url, amongst other things.
+<h4>How to make a bookmarklet application</h4>
+<P>There's a limit to how much you can do in a self-contained bookmarklet so
+if you want to do something serious then you'll need to take ma.gnolia's approach
+and load a javascript include file off your servers.  A
+ routine to do script insertion can be pared down to just this...   
+<pre class=code onClick="selectNode(this)">
+
+javascript:(function(){var s=document.createElement("script"); s.src="http://mydomain.com/script.js"; document.body.appendChild(s);})();
+
+</pre>
+<P>Now to make it a bookmarklet just linkify it by placing the script in the
+HREF attribute of a hyperlink.
+<pre class=code onClick="selectNode(this)">
+
+&lt;A HREF='javascript:(function(){var s=document.createElement("script"); s.src="http://mydomain.com/script.js"; document.body.appendChild(s);})();'&gt;My First Bookmarklete App&lt;/A&gt;
+
+</pre>
+<P>All you have to do is to replace <q>http://mydomain.com/script.js</q> with the URL
+to your javascript application and you
+are totally good to go.  Anytime the user clicks on that bookmarklet the browser
+will reach out and grab your external javascript file and then execute the contents
+right then and there.  This is just a standard javascript include file, it can contain
+objects, functions, variables -- commands outside of functions are executed as the
+script loads just like it was loading up a fresh web-page.  And when it's done
+loading, your javascript has access not only to it's own functions but to the 
+full document the script was invoked from.
+<h4>Self Invoking Function?</h4>
+<P>As an aside, I think it's worth mentioning that this bookmarklet is what's known
+as a <q>self-invoking function</q>.  That is the function is defined but without a name.
+The leading parenthesis defines the start of the function and the end of the function we
+close the curly braces <q>}</q> which defines the end of the function.  Then there's a 
+closing parenthesis <q>)</q> which defines the end of the self-invoking function and
+just as importantly there's the attribute parenthesis at the end.  In this case they are null
+<q>()</q>, however if we wanted to pass a value to our anonymous function we could
+load up the argument list here <q>('one', 'two', 'three', 'whatever')</q>.
+<P>So this function exists but only while it's being executed.  You can't re-call it later
+because it doesn't have a name.   It's a quirky little javascript construct that
+you don't come across every day so it's worth mentioning when you do.  Here's the
+bookmarklet all broken out nice and neat so you can see the structure of the self-invocation.
+<pre class=code onClick="selectNode(this)">
+ ( function () { 
+      var s=document.createElement("script"); 
+      s.src="http://mydomain.com/script.js"; 
+      document.body.appendChild(s);
+   } ) ();
+</pre>
+<h4>An untapped sea of possibilities</h4>
+<P>As dangerous as bookmarklets are, they are only dangerous because they are
+so powerful.   Used for good you can imagine full web-applications, like being
+able to attach a post-it note to any web page you come across, and see other post-its
+other people have made.   They can power traveling message boards.  For intra-nets
+you could use them to show tech support the exact page you are having trouble with.  Or
+clip any page you want and save it in your own virtual storage space on a third party system.
+<P>A security company can use a bookmarklet to scan a page for malicious items, scripts, or
+phishing attempts.   A music company could use it to provide a jukebox on demand.
+Social services could use it as a camera to take a snapshot of your page to use as a thumbnail on
+"my current likes" sections.   The possibilities are so open ended it boggles the mind. 
+<P>If web 2.0 is all about <q>the social</q> then nothing has more power to supercharge that
+concept than bookmarklets.  As much credit as Ajax gets for web 2.0, even it is limited
+only to the domain from which it was created.  Bookmarklets can reach out across the
+world and mash together any web page in the world with any javascript application you can create. 
+ It's just that powerful.
+<P>This is Ajax before Google made it famous.  It's unrealized potential waiting to become
+an application.   It's Web 3.0 to the people with the right idea and the tech savvy to
+exploit it.  And it's a security nightmare that needs to be plugged.
+<P>Of course some bookmarklet applications have already been worked on and developed.
+If you're interested in seeing what other people have made of this browser quirk head 
+on over and take a look at the following sites...
+<ul><LI><A HREF="http://lifehacker.com/software/feature/special-geek-to-live-129141.php" class="out">Ten Must Have Bookmarklets From Lifehacker</A>
+    <LI><A HREF="http://lorelle.wordpress.com/2005/10/13/more-must-have-bookmarklets-than-you-can-swing-a-browser-at/" class="out">More must have bookmarklets</A>
+</ul>
+<h4>A Suggestion to Browser Makers</H4>
+<P>I think IE7 has the right idea... Just a nice polite warning saying "Are you
+really, really sure you want to bookmark this javascript, it's quite dangerous 
+you know".   Firefox's no-questions-asked approach is convenient but sooner or later someone
+is going to start using bookmarklets for evil if they haven't already, and while a warning
+prompt isn't a panacea but it does make the user think for a second about what
+he or she is doing and gives them the chance to reconsider.
+<p>For sure, both IE and Firefox need to both shut down javascript bookmarks 
+if a secure http connection has been established.  That's
+just a no-brainer.   If you try to run a scripted bookmark when you're on a https://
+secure page you should just get an alert box saying you cant run bookmark scripts
+while you're on a secure connection.
+<h4>Conclusion</h4>
+<P>Despite the security concerns, if you're a web application developer or just a hacker
+with a cool javascript effect snippet then bookmarklets are everywhere
+you want to be.  It would not surprise me in the slightest if the next
+<q>big thing</q> on the net was an application driven by bookmarklet applications.
+The Internet is all about the social and nothing enables that more than bookmarklets.
+<BR><BR><div class="noprint adBar"><center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-1034476272741901";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text_image";
+google_ad_channel = "";
+google_color_border = "CC0000";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_text = "000000";
+google_color_url = "008000";
+//-->
+</script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</center></div><BR><BR>
+</div>
+</td>
+<td valign='top' align='center' id='sidebar' style='margin: 0px; padding: 5px; background: url(http://www.hunlock.com/images/blue-fade-bg-left.jpg) repeat-y;' class='noprint'>
+<div id='indexBar'>
+<div class='indexBar'>
+   <div id='indexTitle' class='indexTitle'>Article Index</div>
+   <div id='indexContents' class='indexContents'></div>
+</div>
+<BR>
+</div>
+<script type="text/javascript">
+   if ((_articleAge > _showAds)&&(!getCookie('noads'))) {
+      document.writeln("<div id='noticeBar' class='adBar'>");
+      document.writeln("<div class='rssBar adBar' style='background-color: #FDFFC1; font-family: verdana;'>");
+      document.writeln("<div id='noticeTitle' class='rssTitle'>Service Notice</div>");
+      document.writeln("<div id='noticeContents' class='rssContents'>");
+      document.writeln("<P>Articles older than "+(_showAds-1)+" days are displayed with ");
+      document.writeln("ads to help offset the production costs of this site.  This article ");
+      document.writeln("is "+Math.floor(_articleAge)+" days old.");
+      document.writeln("<P>If you print this page, all ads and navigational items ");
+      document.writeln("will be automatically removed.  You can banish all ads on this site");
+      document.writeln("for the next 24 hours by <A HREF='#' onclick='noads(); return false'>clicking here</A>.");
+      if (screen.width<1250) {
+        google_ad_width = 160;
+        google_ad_height = 600;
+        google_ad_format = "160x600_as";
+      } else {
+        google_ad_width = 336;
+        google_ad_height = 280;
+        google_ad_format = "336x280_as";
+      }
+      google_ad_client = "pub-1034476272741901";
+      google_ad_type = "text_image";
+      google_ad_channel = "";
+      google_color_border = "000000";
+      google_color_bg = "FFFFFF";
+      google_color_link = "0000FF";
+      google_color_text = "000000";
+      google_color_url = "008000";
+
+      document.writeln('<div><center>');
+      document.write('\<script type="text/javascript" '); 
+      document.write('src="http://pagead2.googlesyndication.com/pagead/show_ads.js"\>');
+      document.writeln('\<\/script\>');
+    
+      document.writeln('</center></div>');
+      document.writeln("</div><BR>");
+      document.writeln("</div>");
+      document.writeln("<BR></div>");
+   }
+</script>
+
+<div id='rssBar'>
+<!--[if lte IE 7]><div class='adBar'><br clear=all><BR></div><![endif]-->
+ <div class='rssBar'>
+   <div id='rssTitle' class='rssTitle'>Recent Articles</div>
+   <div id='rssContents' class='rssContents'>
+<A HREF='http://www.hunlock.com/blogs/Social_Javascript_(cross-site_ajax)'>Social Javascript (cross-site ajax)</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Dude!__I_got_a_Dell!'>Dude!  I got a Dell!</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Are_you_ready_for_this'>Are you ready for this</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Closing_The_Book_On_Javascript_Closures'>Closing The Book On Javascript Closures</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Essential_Javascript_--_A_Javascript_Tutorial'>Essential Javascript -- A Javascript Tutorial</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Deferred_Javascript'>Deferred Javascript</A><BR>
+<A HREF='http://www.hunlock.com/blogs/The_Complete_Javascript_Number_Reference'>The Complete Javascript Number Reference</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Javascript_Dates-The_Complete_Reference'>Javascript Dates-The Complete Reference</A><BR>
+<A HREF='http://www.hunlock.com/blogs/The_Complete_Javascript_Strings_Reference'>The Complete Javascript Strings Reference</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Downloading_and_Using_Vista_Web_Fonts'>Downloading and Using Vista Web Fonts</A><BR>
+   </div>
+</div>
+<BR>
+</div>  
+<div id='relatedBar'>
+ <div class='rssBar'>
+   <div id='relatedTitle' class='rssTitle'>Related Atricles</div>
+   <div id='relatedContents' class='rssContents'>
+<A HREF='http://www.hunlock.com/blogs/Yahoo_Pipes--RSS_without_Server_Side_Scripts'>Yahoo Pipes--RSS without Server Side Scripts</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Howto_Dynamically_Insert_Javascript_And_CSS'>Howto Dynamically Insert Javascript And CSS</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Mastering_JSON_(_JavaScript_Object_Notation_)'>Mastering JSON ( JavaScript Object Notation )</A><BR>
+<A HREF='http://www.hunlock.com/blogs/Snippets:_Broadcasting_DZONE_Shares'>Snippets: Broadcasting DZONE Shares</A><BR>
+<A HREF='http://www.hunlock.com/blogs/The_Complete_Javascript_Strings_Reference'>The Complete Javascript Strings Reference</A><BR>
+   </div>
+ </div>
+<BR>
+</div>
+<script type="text/javascript">
+   if ((_articleAge > _showAds)&&(!getCookie('noads'))) {
+      document.writeln("<div id='noticeBar2' class='adBar'>");
+      document.writeln("<div class='rssBar' style='background-color: #FDFFC1; font-family: verdana;'>");
+      document.writeln("<div id='noticeTitle' class='rssTitle'>Service Notice</div>");
+      document.writeln("<div id='noticeContents' class='rssContents'>");
+      document.writeln("<P>Articles older than "+(_showAds-1)+" days are displayed with ");
+      document.writeln("ads to help offset the production costs of this site.  This article ");
+      document.writeln("is "+Math.floor(_articleAge)+" days old.");
+      document.writeln("<P>If you print this page, all ads and navigational items ");
+      document.writeln("will be automatically removed.  You can banish all ads on this site");
+      document.writeln("for the next 24 hours by <A HREF='#' onclick='noads(); return false'>clicking here</A>.");
+      if (screen.width<1250) {
+        google_ad_width = 160;
+        google_ad_height = 600;
+        google_ad_format = "160x600_as";
+      } else {
+        google_ad_width = 336;
+        google_ad_height = 280;
+        google_ad_format = "336x280_as";
+      }
+      google_ad_client = "pub-1034476272741901";
+      google_ad_type = "text_image";
+      google_ad_channel = "";
+      google_color_border = "000000";
+      google_color_bg = "FFFFFF";
+      google_color_link = "0000FF";
+      google_color_text = "000000";
+      google_color_url = "008000";
+
+      document.writeln('<center><div class="adBar">');
+      document.write('<script type="text\/javascript" '); 
+      document.write('src="http://pagead2.googlesyndication.com/pagead/show_ads.js">');
+      document.writeln('<\/script></div>');     
+      document.writeln('</center></div>');
+      document.writeln("</div><BR>");
+      document.writeln("</div>");
+      document.writeln("<BR></div>");
+   }
+</script>
+
+
+<div id='dzoneBar'>
+<!--[if lte IE 7]><div class='adBar'><br clear=all><BR></div><![endif]-->
+<div class='rssBar'>
+   <div id='dzoneTitle' class='rssTitle'>My DZone Recommendations</div>
+   <div id='dzoneContents' class='rssContents'></div>
+</div>
+</div>
+<BR>
+<div id='delBar' class='rssBar'>
+   <div id='delTitle' class='rssTitle'>My Del.icio.us Recommendations</div>
+   <div id='delContents' class='rssContents'></div>
+</div>
+
+</td></tr>
+</table>
+    <div id='footer' class='footer' style='float: right;'>
+<div style='float: left; width: 100px; font-family: verdana;' class='noprint'>
+<div style='background-color: black; color: white;'><center>Feeds</center></div>
+<A HREF="http://www.hunlock.com/feed.php" style="text-decoration: none; color: blue"><img src='http://www.hunlock.com/images/rss.gif' width=16 height=16 border=0> RSS 2.0</A><BR>
+<A HREF="http://www.hunlock.com/feed.php?format=json&callback=jsonFeed" style="text-decoration: none; color: blue"><img src='http://www.hunlock.com/images/json.gif' width=16 height=16 border=0> JSON</A> <A HREF="http://www.hunlock.com/examples/json.txt" style="text-decoration: none; color: blue">[?]</A><BR>
+</div>
+       This article is copyright &copy; 2006, 2007 by <A HREF='mailto:nospam@notreal.gov' onClick='document.location.href="mailto:pat"+"rick@"+"hun"+"lock.com"; return false;'>Patrick Hunlock</A>.<BR>   
+			 The example code and concepts, unless otherwise noted, are released into the public domain and may be used and modified without compensation or attribution.<BR>
+			 <span class='noprint'>The <A HREF="http://www.brandspankingnew.net/archive/2006/12/hohoho.html" class="out">Mini Icons 2</A> are used under a Creative Commons License.
+       <A HREF="http://code.google.com/p/google-code-prettify/" class="out">Google's Code Prettifier</A> is used under the Apache 2.0 license.</span> 
+    </div>
+     
+  </body>
+
+  <head>
+    <script type="text/javascript" src="http://del.icio.us/feeds/json/pcx99?count=10"></script>    
+    <script type="text/javascript">
+       clockID = document.getElementById('clock');
+       doClock();
+function addEvent(elm, evType, fn, useCapture) {
+	if (elm.addEventListener) {
+		elm.addEventListener(evType, fn, useCapture);
+		return true;
+	}
+	else if (elm.attachEvent) {
+		var r = elm.attachEvent('on' + evType, fn);
+		return r;
+	}
+	else {
+		elm['on' + evType] = fn;
+	}
+}
+
+     function startup() {
+       els = document.getElementsByTagName('pre');
+       for (i=0; i<els.length; i++) {
+          addEvent(els[i], 'mouseup', selectNode2, false);
+          addEvent(els[i], 'mousedown', unSelectNode, false);
+       }
+       getFeed('http://www.dzone.com/feed/shared/209881/rss.xml','dzone');
+
+//       var lad = new ajaxObject('lunarAd','/lunarad.txt');
+//       lad.update();
+
+       // Insert the delicious results.
+       
+       Delicious = Delicious || {};
+       var tmp='';
+       for (var i=0, post; post = Delicious.posts[i]; i++) {
+          tmp+='<a href="'+Delicious.posts[i].u+'" rel="nofollow">'+Delicious.posts[i].d.toLowerCase()+'</a><br>';
+       }
+       document.getElementById('delContents').innerHTML=tmp;
+    }
+
+   
+    els=document.getElementsByTagName('h4');
+    idx='';
+    for (i=0; i<els.length; i++) {
+       idx += '<a href="#quickIDX'+i+'">'+els[i].innerHTML+'</a><BR>';
+       els[i].innerHTML='<a name="quickIDX'+i+'"></a>'+els[i].innerHTML;
+    }
+    if (!els.length) {
+       document.getElementById('indexBar').style.display='none';
+    } else {
+       document.getElementById('indexContents').innerHTML=idx;
+    }
+
+		var contact = new ajaxObject('contact','includes/getcontact.php');
+    contact.callback= function(dat) { contactCallback(dat); } 
+
+function getFeed(feed, callback) {
+var newScript = document.createElement('script');
+    newScript.type = 'text/javascript';
+    newScript.src = 'http://pipes.yahoo.com/pipes/9oyONQzA2xGOkM4FqGIyXQ/run?&_render=json&_callback='+callback+'&feed='+feed;
+document.getElementsByTagName("head")[0].appendChild(newScript);
+}
+
+
+function dzone(feed) {
+   var tmp='';
+   for (var i=0; i<feed.value.items.length; i++) {
+      tmp+='<a href="'+feed.value.items[i].link+'" rel="nofollow">';
+      tmp+=feed.value.items[i].title+'</a><br>';
+   }
+   document.getElementById('dzoneContents').innerHTML=tmp;
+}
+
+if (getCookie('noads')) {
+   var el = getCSSRule('.adBar');
+       el.style.display='none';
+}
+
+     registerOnLoad(startup);
+    
+    </script>
+    <script type="text/javascript" src="http://www.hunlock.com/prettify040107.js"></script>
+  
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+<script type="text/javascript">
+  _uacct = "UA-1324848-1";
+  urchinTracker();
+</script>
+
+  </head>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery UI Signature Tests</title>
+<link type="text/css" rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css">
+<link type="text/css" rel="stylesheet" href="jquery.signature.css">
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="excanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.js"></script>
+<script type="text/javascript" src="jquery.simulate.js"></script>
+<script type="text/javascript" src="jquery.signature.js"></script>
+<script type="text/javascript">
+$(function() {
+	test('Set Defaults', function() {
+		expect(2);
+		init();
+		equal($.kbw.signature.options.guideline, false, 'Initial guideline');
+		$.extend($.kbw.signature.options, {guideline: true});
+		equal($.kbw.signature.options.guideline, true, 'Changed guideline');
+		$.extend($.kbw.signature.options, {guideline: false});
+	});
+
+	test('Options', function() {
+		expect(12);
+		var sig = init();
+		deepEqual(sig.signature('option'), {disabled: false, cancel: 'input,textarea,button,select,option',
+			create: null, distance: 1, delay: 0, background: '#ffffff', color: '#000000',
+			thickness: 2, guideline: false, guidelineColor: '#a0a0a0', guidelineOffset: 50,
+			guidelineIndent: 10, notAvailable: 'Your browser doesn\'t support signing',
+			syncField: null, change: null}, 'Initial settings');
+		equal(sig.signature('option', 'thickness'), 2, 'Initial max setting');
+		equal(sig.signature('option', 'guideline'), false, 'Initial guideline setting');
+		sig.signature('option', {notAvailable: 'N/A'});
+		deepEqual(sig.signature('option'), {disabled: false, cancel: 'input,textarea,button,select,option',
+			create: null, distance: 1, delay: 0, background: '#ffffff', color: '#000000',
+			thickness: 2, guideline: false, guidelineColor: '#a0a0a0', guidelineOffset: 50,
+			guidelineIndent: 10, notAvailable: 'N/A',
+			syncField: null, change: null}, 'Changed settings');
+		equal(sig.signature('option', 'thickness'), 2, 'Unchanged thickness setting');
+		equal(sig.signature('option', 'guideline'), false, 'Unchanged guideline setting');
+		sig.signature('option', {thickness: 5, background: '#ffcccc'});
+		deepEqual(sig.signature('option'), {disabled: false, cancel: 'input,textarea,button,select,option',
+			create: null, distance: 1, delay: 0, background: '#ffcccc', color: '#000000',
+			thickness: 5, guideline: false, guidelineColor: '#a0a0a0', guidelineOffset: 50,
+			guidelineIndent: 10, notAvailable: 'N/A',
+			syncField: null, change: null}, 'Changed settings');
+		equal(sig.signature('option', 'thickness'), 5, 'Changed thickness setting');
+		equal(sig.signature('option', 'guideline'), false, 'Unchanged guideline setting');
+		sig.signature('option', 'guideline', true);
+		deepEqual(sig.signature('option'), {disabled: false, cancel: 'input,textarea,button,select,option',
+			create: null, distance: 1, delay: 0, background: '#ffcccc', color: '#000000',
+			thickness: 5, guideline: true, guidelineColor: '#a0a0a0', guidelineOffset: 50,
+			guidelineIndent: 10, notAvailable: 'N/A',
+			syncField: null, change: null}, 'Changed named setting');
+		equal(sig.signature('option', 'thickness'), 5, 'Unchanged thickness setting');
+		equal(sig.signature('option', 'guideline'), true, 'Changed guideline setting');
+	});
+
+	test('Enable/disable', function() {
+		expect(5);
+		var sig = init();
+		ok(!sig.hasClass('ui-state-disabled'), 'Div not disabled state');
+		sig.signature('disable');
+		ok(sig.hasClass('ui-state-disabled'), 'Div is disabled state');
+		sig.simulate('mousedown', {clientX: 100, clientY: 100}).
+			simulate('mousemove', {clientX: 200, clientY: 150}).
+			simulate('mouseup', {clientX: 200, clientY: 150});
+		ok(sig.signature('toJSON').length == 12, 'No drawing');
+		sig.signature('enable');
+		ok(!sig.hasClass('ui-state-disabled'), 'Div not disabled state');
+		sig.simulate('mousedown', {clientX: 100, clientY: 100}).
+			simulate('mousemove', {clientX: 200, clientY: 150}).
+			simulate('mouseup', {clientX: 200, clientY: 150});
+		ok(sig.signature('toJSON').length > 12, 'No drawing');
+	});
+
+	test('Destroy', function() {
+		expect(6);
+		var sig = init();
+		ok(sig.hasClass('kbw-signature'), 'Marker class present');
+		ok($.data(sig[0], 'signature') != null, 'Instance settings present');
+		ok(sig.children('canvas').length == 1, 'Canvas present');
+		sig.signature('destroy');
+		sig = $('#sig');
+		ok(!sig.hasClass('kbw-signature'), 'Marker class gone');
+		ok($.data(sig[0], 'signature') == null, 'Instance settings absent');
+		ok(sig.children('canvas').length == 0, 'Canvas absent');
+	});
+
+	test('JSON', function() {
+		expect(6);
+		var sig = init();
+		var offset = sig.offset();
+		sig.simulate('mousedown', {clientX: 100, clientY: 100}).
+			simulate('mousemove', {clientX: 200, clientY: 150}).
+			simulate('mouseup', {clientX: 200, clientY: 150});
+		equal(sig.signature('toJSON'), '{"lines":[[[' + (100 - offset.left) +
+			',' + (100 - offset.top) + '],[' + (200 - offset.left) + ',' +
+			(150 - offset.top) + ']]]}', 'JSON one line');
+		equal(sig.signature('isEmpty'), false, 'Not empty');
+		sig.simulate('mousedown', {clientX: 50, clientY: 60}).
+			simulate('mousemove', {clientX: 55, clientY: 65}).
+			simulate('mousemove', {clientX: 70, clientY: 40}).
+			simulate('mouseup', {clientX: 70, clientY: 40});
+		equal(sig.signature('toJSON'), '{"lines":[[[' + (100 - offset.left) +
+			',' + (100 - offset.top) + '],[' + (200 - offset.left) + ',' +
+			(150 - offset.top) + ']],[[' + (50 - offset.left) + ',' + (60 - offset.top) +
+			'],[' + (55 - offset.left) + ',' + (65 - offset.top) + '],[' +
+			(70 - offset.left) + ',' + (40 - offset.top) + ']]]}', 'JSON two lines');
+		equal(sig.signature('isEmpty'), false, 'Not empty');
+		sig.signature('clear');
+		equal(sig.signature('toJSON'), '{"lines":[]}', 'JSON cleared');
+		equal(sig.signature('isEmpty'), true, 'Empty');
+	});
+
+	var count = 0;
+	var changedEvent = null;
+	var changedUI = null;
+	function changed(event, ui) {
+		count++;
+		changedEvent = event;
+		changedUI = ui;
+	}
+
+	test('Events', function() {
+		expect(22);
+		var sig = init({change: changed, syncField: '#synch'});
+		var offset = sig.offset();
+		var synch = $('#synch');
+		equal(count, 0, 'No event');
+		equal(synch.val(), '', 'Initial synch');
+		sig.simulate('mousedown', {clientX: 100, clientY: 100}).
+			simulate('mousemove', {clientX: 200, clientY: 150}).
+			simulate('mouseup', {clientX: 200, clientY: 150});
+		equal(count, 1, 'Changed event');
+		equal(changedEvent.type, 'signaturechange', 'Event type');
+		deepEqual(changedUI, {}, 'No UI');
+		equal(synch.val(), '{"lines":[[[' + (100 - offset.left) + ',' + (100 - offset.top) +
+			'],[' + (200 - offset.left) + ',' + (150 - offset.top) + ']]]}', 'Mouse synch');
+		sig.signature('clear');
+		equal(count, 2, 'Changed event');
+		equal(changedEvent.type, 'signaturechange', 'Event type');
+		deepEqual(changedUI, {}, 'No UI');
+		equal(synch.val(), '{"lines":[]}', 'Clear synch');
+		sig = init({syncField: '#synch'}).bind('signaturechange', changed);
+		sig.simulate('mousedown', {clientX: 100, clientY: 100}).
+			simulate('mousemove', {clientX: 200, clientY: 150}).
+			simulate('mouseup', {clientX: 200, clientY: 150});
+		equal(count, 3, 'Changed event');
+		equal(changedEvent.type, 'signaturechange', 'Event type');
+		deepEqual(changedUI, {}, 'No UI');
+		equal(synch.val(), '{"lines":[[[' + (100 - offset.left) + ',' + (100 - offset.top) +
+			'],[' + (200 - offset.left) + ',' + (150 - offset.top) + ']]]}', 'Mouse synch');
+		sig.signature('draw', $.parseJSON('{"lines":[[[100,100],[150,200]]]}'));
+		equal(count, 4, 'Changed event');
+		equal(changedEvent.type, 'signaturechange', 'Event type');
+		deepEqual(changedUI, {}, 'No UI');
+		equal(synch.val(), '{"lines":[[[100,100],[150,200]]]}', 'Draw synch');
+		sig.signature('draw', '{"lines":[[[150,200],[100,100]]]}');
+		equal(count, 5, 'Changed event');
+		equal(changedEvent.type, 'signaturechange', 'Event type');
+		deepEqual(changedUI, {}, 'No UI');
+		equal(synch.val(), '{"lines":[[[150,200],[100,100]]]}', 'Draw synch');
+	});
+});
+
+function init(settings) {
+	if ($('#sig').hasClass('kbw-signature')) {
+		$('#sig').signature('destroy');
+	}
+	return $('#sig').signature(settings);
+}
+</script>
+</head>
+
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture">
+	<div id="sig"></div>
+	<input type="hidden" id="synch">
+</div>
+</body>
+</html>
