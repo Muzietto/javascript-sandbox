@@ -2,6 +2,8 @@ try {
   const C = console.log;
 } catch (ex) {}
 
+C('------------- MOCKINGBIRD EXPERIMENTS --------------');
+
 // CURRIEDS
 // --------
 const curriedExponential = myself => x => n => {
