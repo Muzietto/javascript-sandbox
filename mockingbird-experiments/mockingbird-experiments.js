@@ -1,6 +1,4 @@
-try {
-  const C = console.log;
-} catch (ex) {}
+const C = console.log;
 
 C('------------- MOCKINGBIRD EXPERIMENTS --------------');
 
@@ -16,11 +14,13 @@ const curriedExponential = myself => x => n => {
   }
 };
 
+C('curriedExponential(curriedExponential)(2)(3)');
 C(curriedExponential(curriedExponential)(2)(3)); // that's 8
 
-// curried mockingbird
+C('Enter the curried mockingbird!!! M = fn => fn(fn); <-- curried functions may omit next param');
 const M = fn => fn(fn); // curried functions may omit next param
 
+C('M(curriedExponential)(2)(3)');
 C(M(curriedExponential)(2)(3)); // that's 8
 
 // UNCURRIEDS
@@ -35,9 +35,11 @@ const uncurriedExponential = (myself, x, n) => {
   }
 };
 
+C('uncurriedExponential(uncurriedExponential, 2, 3)');
 C(uncurriedExponential(uncurriedExponential, 2, 3)); // that's 8
 
-// uncurried mockingbird
-const Mm = fn => (...args) => fn(fn, ...args) // uncurried functions must explicit next params
+C('Enter the uncurried mockingbird!!! uncM = fn => (...args) => fn(fn, ...args); <-- uncurried functions must explicit next params');
+const uncM = fn => (...args) => fn(fn, ...args) // uncurried functions must explicit next params
 
-C(Mm(uncurriedExponential)(2,3)); // that's 8
+C('uncM(uncurriedExponential)(2,3) <-- further args are provided together');
+C(uncM(uncurriedExponential)(2,3)); // that's 8

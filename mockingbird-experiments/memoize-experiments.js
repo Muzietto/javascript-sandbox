@@ -1,4 +1,6 @@
-const C = console.log;
+try {
+  const C = console.log;
+} catch (ex) {}
 const J = JSON.stringify;
 
 C('------------- MEMOIZE EXPERIMENTS --------------');
