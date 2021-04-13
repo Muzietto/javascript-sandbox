@@ -20,30 +20,52 @@ const why = fn => // fn :: (myself, ...args) -> myself(args)
   (
     maker => // passed by the IIFE down there
       (...args) =>
-        fn(maker(maker), ...args); // maker(maker) gets rid of MAKER before recurring
+        fn(maker(maker), ...args) // maker(maker) gets rid of MAKER before recurring
   )
   (
     MAKER =>
       (...ARGS) =>
-        fn(MAKER(MAKER), ...ARGS);
+        fn(MAKER(MAKER), ...ARGS)
   );
 
 C('exxxxp :: (myself, ...args) -> myself(args)');
 C('why(exxxxp)(2,8)');
 C(why(exxxxp)(2,8));
 
-// const why2 = fn => // fn :: (myself, ...args) -> myself(args)
-//   (
-//     (
-//       MAKER =>
-//         (...ARGS) =>
-//           fn(MAKER(MAKER), ...ARGS)
-//     ) =>
+// reducing the expressions a bit...
+// const why1 = fn => // fn :: (myself, ...args) -> myself(args)
+//   ( //   (MAKER => (...ARGS) => fn(MAKER(MAKER), ...ARGS)) at the place of maker
+//          produces a nested cascading effect each time that fn runs
 //       (...args) =>
 //         fn((...ARGS) => fn((...ARGS) => fn((...ARGS) => fn((...ARGS) => fn(MAKER(MAKER), ...ARGS), ...ARGS), ...ARGS), ...ARGS), ...args)
-//   )
-//   (
-//     MAKER =>
-//       (...ARGS) =>
-//         fn(MAKER(MAKER), ...ARGS)
 //   );
+
+// Y-combinator using the mockingbird
+const whyM =
+  fn =>
+    (x => x(x))( // this is "mockingbird("
+      MAKER =>
+        (...ARGS) =>
+          fn(MAKER(MAKER), ...ARGS)
+    );
+
+C('whyM(exxxxp)(2,8)');
+C(whyM(exxxxp)(2,8));
+
+// reducing the expressions a bit...
+// const whyM1 =
+//   fn =>
+//     (
+//       (MAKER => (...ARGS) => fn(MAKER(MAKER), ...ARGS))
+//         (MAKER2 => (...ARGS2) => fn(MAKER2(MAKER2), ...ARGS2))
+//     );
+//
+// const whyM2 = // <-- same as why1
+//   fn =>
+//     (
+//       (...ARGS) =>
+//         fn((...ARGS2) => fn((...ARGS2) => fn((...ARGS2) => fn((...ARGS2) => fn(MAKER2(MAKER2), ...ARGS2), ...ARGS2), ...ARGS2), ...ARGS2), ...ARGS)
+//     );
+// THIS MEANS THAT...
+// the essence of (maker => (...args) => fn(maker(maker), ...args))
+// is (x => x(x))
