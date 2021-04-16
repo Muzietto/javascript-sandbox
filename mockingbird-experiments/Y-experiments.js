@@ -69,3 +69,18 @@ C(whyM(exxxxp)(2,8));
 // THIS MEANS THAT...
 // the essence of (maker => (...args) => fn(maker(maker), ...args))
 // is (x => x(x))
+
+// aborted clumsy trampolines
+// const isEven = (myself, n) => ((n === 0) || !myself(n - 1));
+//
+// const whyT = fn =>
+//   (
+//     maker => (...args) => {
+//         setTimeout(fn(maker(maker), ...args),0);
+//       }
+//   )
+//   (
+//     MAKER =>
+//       (...ARGS) =>
+//         fn(MAKER(MAKER), ...ARGS)
+//   );
