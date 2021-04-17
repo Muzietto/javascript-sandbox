@@ -43,3 +43,12 @@ const uncM = fn => (...args) => fn(fn, ...args) // uncurried functions must expl
 
 C('uncM(uncurriedExponential)(2,3) <-- further args are provided together');
 C(uncM(uncurriedExponential)(2,3)); // that's 8
+
+// sub-optimal
+const myUncurriedExponential = (myself, x, n) => {
+  if (n === 0) return 1;
+  return x * myself(myself, x, n - 1);
+}
+
+C('uncM(myUncurriedExponential)(2,5) --> 32');
+C(uncM(myUncurriedExponential)(2,5)); // that's 32
