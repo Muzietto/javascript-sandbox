@@ -4,6 +4,10 @@ const compose = (...fns) =>
   (...args/* of last fn*/) =>
     fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
 
+const c2 = (...fns) =>
+  (...args/* of last fn*/) =>
+    fns.reduce((res, fn) => [fn.call(null, ...res)], args)[0];
+
 // curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
 function curry(fn) {
   const arity = fn.length;
@@ -54,7 +58,7 @@ const last = compose(head, reverse);
 // chain :: Monad m => (a -> m b) -> m a -> m b
 const chain = famb => compose(join, map(famb));
 
-// lift :: (a -> b) => Functor fa => Functor Fb  
+// lift :: (a -> b) => Functor fa => Functor Fb
 const lift = fab => fa => fa.map(fab);
 
 class IO {

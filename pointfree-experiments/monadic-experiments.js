@@ -12,8 +12,19 @@ const firstAddressStreet = compose(
   safeProp('addresses'),
 );
 
+const firstAddressStreet2 = c2(
+  safeProp('addresses'),
+  lift(safeHead),
+  lift(lift(safeProp('street'))),
+);
+
 C("firstAddressStreet({addresses: [{ street: { name: 'Mulburry', number: 8402 }, postcode: 'WC2N' }] })");
 C(firstAddressStreet({
+  addresses: [{ street: { name: 'Mulburry', number: 8402 }, postcode: 'WC2N' }],
+}));
+
+C("firstAddressStreet2({addresses: [{ street: { name: 'Mulburry', number: 8402 }, postcode: 'WC2N' }] })");
+C(firstAddressStreet2({
   addresses: [{ street: { name: 'Mulburry', number: 8402 }, postcode: 'WC2N' }],
 }));
 // Maybe(Maybe(Maybe({name: 'Mulburry', number: 8402})))
