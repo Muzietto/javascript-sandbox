@@ -1,3 +1,4 @@
+// http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 const C = console.log;
 
 C('------------- MOCKINGBIRD EXPERIMENTS --------------');
