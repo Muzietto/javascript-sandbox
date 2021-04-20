@@ -1,3 +1,14 @@
+# dependencies
+/node_modules
+
+# production
+/dist
+
+# misc
+npm-debug.log*
+.cache/
+package-lock.json
+
 # Logs
 logs
 *.log
@@ -56,4 +67,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
