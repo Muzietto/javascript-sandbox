@@ -28,6 +28,8 @@ const trace = curry((tag, x) => {
   return x;
 });
 
+const take = n => xs => xs.slice(0, n);
+
 function prop(propName) {
   return obj => obj[propName];
 }
@@ -67,19 +69,19 @@ class IO {
   }
 
   constructor(fn) {
-    this.$value = fn;
+    this.unsafePerformIO = fn;
   }
 
   map(fn) {
-    return new IO(compose(fn, this.$value));
+    return new IO(compose(fn, this.unsafePerformIO));
   }
 
   inspect() {
-    return `IO(${this.$value})`;
+    return `IO(${this.unsafePerformIO})`;
   }
 
   run() {
-    return this.$value();
+    return this.unsafePerformIO();
   }
 }
 
@@ -152,6 +154,7 @@ class Right extends Either {
 
 const left = x => new Left(x);
 
+// composed type
 class Compose {
   constructor(fgx) {
     this.getCompose = fgx;
