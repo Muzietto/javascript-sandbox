@@ -82,7 +82,11 @@ const renderedPage = compose(xs => galleryPage({pictures:xs}), take(10)/*, sortB
 // gallery :: Params -> Task Error HTML
 // const gallery = compose(map(renderedPage), getJSON(`https://jsonplaceholder.typicode.com${photosUrl}`));
 const gallery = getJSON(`https://jsonplaceholder.typicode.com${photosUrl}`)
-  .chain(x => task(({resolve}) => resolve(renderedPage(x))));
+  .chain(tasked(renderedPage));
+
+function tasked(fn) {
+  return x => task(({resolve}) => resolve(fn(x)));
+}
 
 // -- Impure calling code ----------------------------------------------
 gallery
@@ -90,4 +94,4 @@ gallery
   .then(page => { $('#mainDiv').html(page); })
   .catch(error => { $('#errorDiv').html(error.message); });
 
-// $('#spinner').show();
+// check also fromPromised --> https://folktale.origamitower.com/api/v2.0.0/en/folktale.concurrency.task.frompromised.html
