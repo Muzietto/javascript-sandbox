@@ -1,4 +1,4 @@
-const { task } = folktale.concurrency.task;
+const { task, of } = folktale.concurrency.task;
 const C = console.log;
 
 const traceTask = tag => x => task(({ resolve }) => {
@@ -7,9 +7,18 @@ const traceTask = tag => x => task(({ resolve }) => {
 })
 
 C('------------- TASK EXPERIMENTS --------------');
-
+/*
+resolver === {
+  cancel: ƒ (e)
+  cleanup: ƒ (n)
+  isCancelled: (...)
+  onCancelled: ƒ (n)
+  reject: ƒ (e)
+  resolve: ƒ (e)
+}
+*/
 const delay = (ms) => task(
-  (resolver) => { // resolver === {resolve, reject,cleanup}
+  (resolver) => {
     const timerId = setTimeout(() => resolver.resolve(ms), ms);
     resolver.cleanup(() => {
       clearTimeout(timerId);
@@ -32,12 +41,19 @@ delayedResult(200, 100)
   .then(trace('delay(200).or(delay(100))'));
 
 function getJSON(url) {
-  return task(({ resolve, reject }) => {
+  return task(({
+    resolve,
+    reject,
+    cancel,
+    cleanup,
+    isCancelled,
+    onCancelled,
+  }) => {
     $.ajax({
       url: url,
       type: 'GET',
       error: reject, // it rejects on error
-      success: resolve // it resolves the json data
+      success: resolve, // it resolves the json data
     })
   })
 }
@@ -77,7 +93,7 @@ const galleryTemplate = `{{#each pictures}}
 const galleryPage = Handlebars.compile(galleryTemplate);
 
 // renderPage :: Pictures -> HTML
-const renderedPage = compose(xs => galleryPage({pictures:xs}), take(10)/*, sortBy(prop('date'))*/);
+const renderedPage = compose(xs => galleryPage({pictures:xs}), take(4)/*, sortBy(prop('date'))*/);
 
 // gallery :: Params -> Task Error HTML
 // const gallery = compose(map(renderedPage), getJSON(`https://jsonplaceholder.typicode.com${photosUrl}`));
@@ -95,3 +111,32 @@ gallery
   .catch(error => { $('#errorDiv').html(error.message); });
 
 // check also fromPromised --> https://folktale.origamitower.com/api/v2.0.0/en/folktale.concurrency.task.frompromised.html
+
+// getJSON2 :: String -> Task Left Right
+function getJSON2(url) {
+  return task(({
+    resolve,
+    reject,
+    cancel,
+    cleanup,
+    isCancelled,
+    onCancelled,
+  }) => {
+    $.ajax({
+      url: url,
+      type: 'GET',
+      // error: (xhr, textStatus, errorThrown) => { debugger; },
+      // error: err => resolve(left(JSON.stringify(err))), // it rejects on error
+      error: compose(resolve, left, JSON.stringify),
+      // success: data => resolve(right(data)) // it resolves the json data
+      success: compose(resolve, right),
+    })
+  })
+}
+
+const isEven = num => getJSON2(`https://api.isevenapi.xyz/api/iseven${Math.random() > 0.5 ? 'XXX' : ''}/${num}`);
+
+const add = x => y => x + y;
+
+C('of(add).ap(of(2)).ap(of(3))');
+C(of(add).ap(of(2)).ap(of(3)).run().promise());
