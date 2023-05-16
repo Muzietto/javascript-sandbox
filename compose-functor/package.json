@@ -1,0 +1,25 @@
+{
+  "name": "compose-functor",
+  "version": "1.0.0",
+  "description": "following https://github.com/mochajs/mocha-examples.git examples/mocha",
+  "main": "compose-functor.js",
+  "scripts": {
+    "compile": "babel src -d lib",
+    "prepublish": "npm run compile",
+    "test": "mocha --watch"
+  },
+  "directories": {
+    "lib": "./src",
+    "test": "./test"
+  },
+  "author": "Marco Faustinelli (marco_faustinelli@yahoo.com)",
+  "license": "GPL-3",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.9.0",
+    "mocha": "latest"
+  }
+}
