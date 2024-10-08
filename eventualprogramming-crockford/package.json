@@ -1,0 +1,30 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "test setup following https://github.com/mochajs/mocha-examples.git examples/mocha",
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "babel src -d lib",
+    "prepublish": "npm run compile",
+    "test": "mocha",
+    "testwatch": "mocha --watch"
+  },
+  "directories": {
+    "lib": "./src",
+    "test": "./test"
+  },
+  "author": "Marco Faustinelli (marco_faustinelli@yahoo.com)",
+  "license": "GPL-3",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.9.0",
+    "mocha": "latest",
+    "chai": "latest"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}
