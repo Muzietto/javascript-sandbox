@@ -19,4 +19,5 @@ export function game(pinsString) {
     }, 0);
 
   return x => score;
+  // cia mamma
 } 
